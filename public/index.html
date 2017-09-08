@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="movies">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <!-- JavaScript -->
+    <script src="/app.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body ng-controller="MainController as main">
+
+
+
+    <form ng-submit="main.searchByTitle(searchBox);">
+      <input type="text" ng-model="searchBox"></input>
+      <button type="submit">Find Movie</button>
+
+      <div>
+
+        <p>Movie Title: {{main.foundMovie.title}}</p>
+        <p>Starring: {{main.foundMovie.actors}}<p>
+        <p>Rating: {{main.foundMovie.rating}}</p>
+        <p>Year Released: {{main.foundMovie.year_released}}</p>
+        <p>Genre: {{main.foundMovie.genre}}</p>
+        <p>Director: {{main.foundMovie.director}}</p>
+        <p>Plot: {{main.foundMovie.plot}}</p>
+        <p>Rotten Tomatoes Score: {{main.foundMovie.rotten_tomatoes_score}}</p>
+        <img ng-src="main.foundMovie.poster">
+
+      </div>
+    </form>
+  </body>
+</html>
