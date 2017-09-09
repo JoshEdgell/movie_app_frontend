@@ -6,8 +6,11 @@ app.controller('MainController', ['$http', function($http){
   this.allUsers = [];
   this.foundMovie = {};
   this.foundMovieReviews = [];
+  this.searchResults = [];
   this.newMovie = {};
   this.requestedMovieId = 0;
+  this.displaySearchResults = false;
+  this.displayAddReviewToMovie = false;
   this.getAllApiMovies = function(){
     // Return the data for all of the movies in our database
     $http({
@@ -25,7 +28,6 @@ app.controller('MainController', ['$http', function($http){
     }).then(function(response){
       response.data.forEach(function(a){delete a.password});
       controller.allUsers = response.data;
-      console.log(controller.allUsers)
     }, function(error){
       console.log(error)
     })
@@ -58,7 +60,8 @@ app.controller('MainController', ['$http', function($http){
           director: response.data.Director,
           actors: response.data.Actors,
           poster: response.data.Poster,
-          rotten_tomatoes_score: response.data.Ratings[1].Value
+          rotten_tomatoes_score: response.data.Ratings[1].Value,
+          imdb_id: response.data.imdbID
         }
       }, function(error){
         console.log(error)
@@ -75,6 +78,24 @@ app.controller('MainController', ['$http', function($http){
         console.log(error)
       })
     }
+  };
+  this.searchAllNames = function(data){
+    data = data.replace(' ', '+');
+    $http({
+      method: 'get',
+      url: 'http://www.omdbapi.com/?s=' + data + '&apikey=68da6914'
+    }).then(function(response){
+      controller.displaySearchResults = true;
+      controller.searchResults = response.data.Search;
+      console.log(controller.searchResults);
+    }, function(error){
+      console.log(error);
+    })
+  };
+  this.selectMovieToAddReview = function(imdbID){
+    //When a user clicks on a found movie poster, this function will use the movie's imdbID to find it either in our database or in OMDB's.  It'll set all other center divs to false and display the addReviewToMovie div.
+    this.displaySearchResults = false;
+    this.displayAddReviewToMovie = true;
   };
 
 

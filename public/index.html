@@ -9,29 +9,41 @@
     <script src="/app.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="/style.css">
+
   </head>
   <body ng-controller="MainController as main">
 
+    <div class="container">
 
-        <!-- Look for a movie in the OMDB database -->
-    <form ng-submit="main.searchForMovie(searchBox);">
-      Search Movies by Title: <input type="text" ng-model="searchBox"></input>
-      <button type="submit">Find Movie</button>
-    </form>
+      <div class="leftDiv">
 
-          <!-- Display returned movie from OMDB database -->
-      <div>
-        <p>Movie Title: {{main.foundMovie.title}}</p>
-        <p>Starring: {{main.foundMovie.actors}}<p>
-        <p>Rating: {{main.foundMovie.rating}}</p>
-        <p>Year Released: {{main.foundMovie.year_released}}</p>
-        <p>Genre: {{main.foundMovie.genre}}</p>
-        <p>Director: {{main.foundMovie.director}}</p>
-        <p>Plot: {{main.foundMovie.plot}}</p>
-        <p>Rotten Tomatoes Score: {{main.foundMovie.rotten_tomatoes_score}}</p>
-        <img ng-src={{main.foundMovie.poster}}>
+        <div class="searchMovies">
+          <form ng-submit="main.searchAllNames(searchBox);">
+            Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
+            <button type="submit">Find Movie</button>
+          </form>
+        </div>
+
       </div>
 
+      <div class="centerDiv">
+
+        <div class="displayResults" ng-if="main.displaySearchResults">
+
+          <div class="foundMovie" ng-repeat="movie in main.searchResults">
+            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview({{movie.imdbID}})">
+            Starring: {{movie.Actors}} Released: {{movie.Year}}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="rightDiv">
+      </div>
+
+    </div>
 
 
     </form>
