@@ -2,8 +2,9 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
+  this.allMovies = [];
   this.foundMovie = {};
-  this.newMovie = {}
+  this.newMovie = {};
   this.searchByTitle = function(data){
     data = data.replace(' ', '+');
     $http({
@@ -24,7 +25,7 @@ app.controller('MainController', ['$http', function($http){
     }, function(error){
       console.log(error)
     }
-  );
+  )};
   this.addMovieToDatabase = function(){
     this.newMovie = this.foundMovie.to_json;
     console.log(this.foundMovie);
@@ -37,6 +38,20 @@ app.controller('MainController', ['$http', function($http){
     },function(error){
       console.log(error);
     })
-  }
-  }
+  };
+  this.getAllApiMovies = function(){
+    $http({
+      method: 'get',
+      url: 'http://localhost:3000/movies'
+    }).then(function(response){
+      controller.allMovies = response.data;
+      console.log(controller.allMovies)
+    })
+  };
+  this.searchForMovie = function(data){
+    
+  };
+
+
+  this.getAllApiMovies();
 }])
