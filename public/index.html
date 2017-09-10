@@ -28,16 +28,33 @@
 
       <div class="centerDiv">
 
-        <div class="displayResults" ng-if="main.displaySearchResults">
+        <!-- Display the results of a search for a movie -->
 
+        <div class="displayResults" ng-if="main.displaySearchResults">
           <div class="foundMovie" ng-repeat="movie in main.searchResults">
             <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview(movie.imdbID)">
             <h4>{{movie.Title}}</h4>
             <p>Released: {{movie.Year}}</p>
-
           </div>
-
         </div>
+
+          <!-- Display single movie after selection -->
+
+        <div ng-if="main.displaySingleMovie">
+          <div class="singleMovie">
+            <div class="infoDiv">
+              <h2>{{main.currentMovie.title}}</h2>
+              <p>Starring: {{main.currentMovie.actors}}</p>
+              <p>Rating: {{main.currentMovie.rating}}     Year Released: {{main.currentMovie.year_released}}</p>
+              <p>Director: {{main.currentMovie.director}}</p>
+              <p>Synopsis: {{main.currentMovie.plot}}</p>
+              <p>Rotten Tomatoes Score: {{main.currentMovie.rotten_tomatoes_score}}</p>
+            </div>
+            <img class="infoPoster" ng-src="{{main.currentMovie.poster}}">
+          </div>
+          <button ng-click="main.addMovieToDatabase();">Add to Database</button>
+        </div>
+
 
       </div>
 

@@ -12,12 +12,14 @@
 }
 
 
-
+  /*---------------------------------*/
   /*All center-specific CSS goes here*/
+  /*---------------------------------*/
 .centerDiv {
   width: 60%;
   border: 1px solid yellow;
 }
+ /*--------------Display results from a search------------*/
 .displayResults {
   display: flex;
   flex-wrap: wrap;
@@ -38,6 +40,19 @@
 .foundMovie p {
   margin-top: -18px;
 }
+
+ /*--------------Display single movie---------------------*/
+ .singleMovie {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-around;
+ }
+ .infoDiv {
+   width: 45%;
+ }
+ .infoPoster {
+   width: 40%;
+ }
 
 
 
