@@ -4,10 +4,8 @@ app.controller('MainController', ['$http', function($http){
   const controller = this;
   this.allMovies = [];
   this.allUsers = [];
-  this.foundMovie = {};
-  this.foundMovieReviews = [];
   this.searchResults = [];
-  this.newMovie = {};
+  this.currentMovie = {};
   this.requestedMovieId = 0;
   this.displaySearchResults = false;
   this.displayAddReviewToMovie = false;
@@ -29,7 +27,7 @@ app.controller('MainController', ['$http', function($http){
       response.data.forEach(function(a){delete a.password});
       controller.allUsers = response.data;
     }, function(error){
-      console.log(error)
+      console.log(error, 'getAllUsers')
     })
   }
   this.checkMovieList = function(input){
@@ -42,43 +40,6 @@ app.controller('MainController', ['$http', function($http){
     }
     return false
   };
-  this.searchForMovie = function(data){
-    // When a user searches for a movie, if the movie is not already in our database, we'll send a request to our database for the movie and its reviews.  If the movie is not already in our database, a request is made to OMDB.
-    if (this.checkMovieList(data) == false) {
-      // If the movie is not in our database, run an AJAX request to OMDB
-      data = data.replace(' ', '+');
-      $http({
-        method: 'get',
-        url: 'http://www.omdbapi.com/?t=' + data + '&apikey=68da6914'
-      }).then(function(response){
-        controller.foundMovie = {
-          title: response.data.Title,
-          rating: response.data.Rated,
-          genre: response.data.Genre,
-          year_released: response.data.Year,
-          plot: response.data.Plot,
-          director: response.data.Director,
-          actors: response.data.Actors,
-          poster: response.data.Poster,
-          rotten_tomatoes_score: response.data.Ratings[1].Value,
-          imdb_id: response.data.imdbID
-        }
-      }, function(error){
-        console.log(error)
-      }
-    )} else {
-      // If the movie is in our database, run the AJAX request to our database
-      $http({
-        method: 'get',
-        url: 'http://localhost:3000/movies/' + this.requestedMovieId
-      }).then(function(response){
-        controller.foundMovie = response.data;
-        controller.foundMovieReviews = response.data.reviews;
-      }, function(error){
-        console.log(error)
-      })
-    }
-  };
   this.searchAllNames = function(data){
     data = data.replace(' ', '+');
     $http({
@@ -87,16 +48,40 @@ app.controller('MainController', ['$http', function($http){
     }).then(function(response){
       controller.displaySearchResults = true;
       controller.searchResults = response.data.Search;
-      console.log(controller.searchResults);
     }, function(error){
-      console.log(error);
+      console.log(error, 'searchAllNames');
     })
   };
-  this.selectMovieToAddReview = function(imdbID){
+  this.selectMovieToAddReview = function(imdb_id){
     //When a user clicks on a found movie poster, this function will use the movie's imdbID to find it either in our database or in OMDB's.  It'll set all other center divs to false and display the addReviewToMovie div.
-    this.displaySearchResults = false;
-    this.displayAddReviewToMovie = true;
+    if(this.checkMovieList(imdb_id) == true){
+      console.log('in database');
+      // If the movie is already in our database, send a request to our database to get the movie's data into the controller's currentMovie object.
+    } else {
+      // If the movie is not in our database, send a request to OMDB to get the movie's data and put the relevant data into the controller's currentMovie object.
+      $http({
+        method: 'get',
+        url: 'http://www.omdbapi.com/?i=' + imdb_id + '&apikey=68da6914'
+      }).then(function(response){
+        console.log(response.data);
+        controller.currentMovie.title = response.data.Title;
+        controller.currentMovie.rating = response.data.Rated;
+        controller.currentMovie.genre = response.data.Genre;
+        controller.currentMovie.year_released = response.data.Year;
+        controller.currentMovie.director = response.data.Director;
+        controller.currentMovie.actors = response.data.Actors;
+        controller.currentMovie.poster = response.data.Poster;
+        controller.currentMovie.plot = response.data.Plot;
+        controller.currentMovie.rotten_tomatoes_score = response.data.Ratings[1].Value;
+        controller.currentMovie.imdb_id = response.data.imdbID;
+        console.log(controller.currentMovie, "current movie")
+      }, function(error){
+        console.log(error);
+      })
+    }
   };
+
+
 
 
   this.getAllApiMovies();

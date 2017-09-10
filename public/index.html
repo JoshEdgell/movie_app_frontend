@@ -31,8 +31,9 @@
         <div class="displayResults" ng-if="main.displaySearchResults">
 
           <div class="foundMovie" ng-repeat="movie in main.searchResults">
-            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview({{movie.imdbID}})">
-            Starring: {{movie.Actors}} Released: {{movie.Year}}
+            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview(movie.imdbID)">
+            <h4>{{movie.Title}}</h4>
+            <p>Released: {{movie.Year}}</p>
 
           </div>
 

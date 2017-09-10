@@ -23,9 +23,20 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+.foundMovie {
+  text-align: center;
+  width: 40%;
+  height: 500px;
+}
 .foundMoviePoster {
   width: 250px;
   height: 400px;
+}
+.foundMovie h4 {
+  margin-top: -2px;
+}
+.foundMovie p {
+  margin-top: -18px;
 }
 
 
