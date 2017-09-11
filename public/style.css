@@ -1,14 +1,40 @@
+body {
+  background-color: #939393;
+}
+
+h1 {
+  text-align: center;
+  font-size: 48px;
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid black;
   justify-content: space-between;
+  height: 1000px;
 }
 
   /*All left-specific CSS goes here*/
 .leftDiv {
   width: 19.5%;
-  border: 1px solid red;
+  background: url('/images/movie_reel.png');
+  background-repeat:repeat-y;
+  max-width: 250px;
+}
+.recentsDiv h3 {
+  position: absolute;
+  margin-top: -20px;
+  margin-left: 56px;
+}
+.recentMoviePosters {
+  padding-left: 58px;
+}
+.recentMoviePoster {
+  width: 134px;
+  height: 177px;
+  padding-bottom: 20px;
+  padding-top: 13px;
+  padding-bottom: 3px;
 }
 
 
@@ -17,7 +43,6 @@
   /*---------------------------------*/
 .centerDiv {
   width: 60%;
-  border: 1px solid yellow;
 }
  /*--------------Display results from a search------------*/
 .displayResults {
@@ -59,5 +84,7 @@
   /*All right-specific CSS goes here*/
 .rightDiv {
   width: 19.5%;
-  border: 1px solid blue;
+  background: url('/images/movie_reel.png');
+  background-repeat:repeat-y;
+  max-width: 250px;
 }
