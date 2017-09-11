@@ -8,6 +8,14 @@ app.controller('MainController', ['$http', function($http){
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
+  this.currentUser = {
+    id: 1,
+    user: 'JoshEdgell',
+    first_name: 'Josh',
+    last_name: 'Edgell',
+    age: 36,
+    gender: 'M'
+  };
   this.newReviewText = '';
   this.requestedMovieId = 0;
   this.displaySearchForm = true;
@@ -124,6 +132,24 @@ app.controller('MainController', ['$http', function($http){
     for (let i = 0; i < 5; i++){
       this.fiveMostRecentMovies.push(this.allMovies[this.allMovies.length - (i + 1)]);
     }
+  };
+  this.addReviewToMovie = function(){
+    $http({
+      method: 'post',
+      url: this.url + 'reviews',
+      data: {
+        user_id: this.currentUser.id,
+        movie_id: this.currentMovie.id,
+        review_text: this.newReviewText
+      }
+    }).then(function(response){
+      controller.getAllApiMovies();
+      controller.hideAllCenterDivs();
+      controller.newReviewText = '';
+      controller.displaySearchForm = true;
+    }, function(error){
+      console.log(error)
+    })
   };
 
 

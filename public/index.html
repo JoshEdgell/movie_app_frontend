@@ -66,12 +66,15 @@
             <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null">
               <p>This movie has no reviews. Be the first to add one.</p>
               <textarea ng-model="ctrl.newReviewText"></textarea>
-              <button ng-click="ctrl.addNewReview">Add Review</button>
+              <button ng-click="ctrl.addReviewToMovie();">Add Review</button>
             </div>
 
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length != null">
+                <div class="movieReview" ng-repeat="review in ctrl.currentMovie.reviews">
+                  <p>{{review.review_text}}</p>
+                </div>
               <textarea ng-model="ctrl.newReviewText"></textarea>
-              <button ng-click="ctrl.addNewReview">Add Review</button>
+              <button ng-click="ctrl.addReviewToMovie();">Add Review</button>
             </div>
 
             </div>
