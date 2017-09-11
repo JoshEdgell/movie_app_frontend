@@ -8,6 +8,7 @@ app.controller('MainController', ['$http', function($http){
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
+  this.currentReview = {};
   this.currentUser = {
     id: 1,
     user: 'JoshEdgell',
@@ -21,10 +22,12 @@ app.controller('MainController', ['$http', function($http){
   this.displaySearchForm = true;
   this.displaySearchResults = false;
   this.displaySingleMovie = false;
+  this.displayReviewEdit = false;
   this.hideAllCenterDivs = function(){
     this.displaySearchResults = false;
     this.displaySingleMovie = false;
     this.displaySearchForm = false;
+    this.displayReviewEdit = false;
   };
   this.getAllApiMovies = function(){
     // Return the data for all of the movies in our database
@@ -138,7 +141,6 @@ app.controller('MainController', ['$http', function($http){
     //First, check to see if the movie exists in our database.
     //If the movie is in our database, post the review to the reviews table (linked to the current movie)
     //If the movie is not in our database, add the movie to the database, then add the review to the newly-created movie.
-    console.log(imdbid);
     if (this.checkMovieList(imdbid) == true) {
       $http({
         method: 'post',
@@ -162,7 +164,6 @@ app.controller('MainController', ['$http', function($http){
         url: this.url + 'movies',
         data: this.currentMovie
       }).then(function(response){
-        console.log(response.data.id);
         controller.currentMovie.id = response.data.id;
           $http({
             method: 'post',
@@ -174,6 +175,7 @@ app.controller('MainController', ['$http', function($http){
             }
           })
         }).then(function(response){
+          controller.newReviewText = '';
           controller.getAllApiMovies();
           controller.hideAllCenterDivs();
           controller.displaySearchForm = true;
@@ -182,12 +184,6 @@ app.controller('MainController', ['$http', function($http){
         })
       }
     };
-
-
-
-
-
-
   this.deleteReview = function(id){
     $http({
       method: 'delete',
@@ -206,6 +202,30 @@ app.controller('MainController', ['$http', function($http){
     }
     this.currentMovie.reviews = newArray;
   };
+  this.editReview = function(id){
+    $http({
+      method: 'get',
+      url: this.url + 'reviews/' + id
+    }).then(function(response){
+      controller.currentReview = response.data;
+      controller.hideAllCenterDivs();
+      controller.displayReviewEdit = true;
+      console.log(controller.currentReview);
+    }, function(error){
+      console.log(error,'review error')
+    })
+  };
+  this.publishReviewEdit = function(){
+    $http({
+      method: 'put',
+      url: this.url + 'reviews/' + this.currentReview.id,
+      data: this.currentReview
+    }).then(function(response){
+      console.log(response,'response from review edit');
+    }, function(error){
+      console.log(error, 'error from review edit');
+    })
+  }
 
 
 
