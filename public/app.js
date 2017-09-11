@@ -255,10 +255,11 @@ app.controller('MainController', ['$http', function($http){
      $http({
        method: 'POST',
        url: this.url + 'users',
-       data: { user: { username: userPass.username, password_digest: userPass.password }},
+       data: { user: { username: userPass.username, password: userPass.password }},
      }).then(function(response) {
        console.log(response);
-       this.user = response.data.user;
+       controller.user = response.data.user;
+
      })
    }
 
@@ -272,13 +273,13 @@ $http({
 
   method: 'POST',
   url: this.url + 'users/login',
-  data: { user: { username: userPass.username, password_digest: userPass.password }},
+  data: { user: { username: userPass.username, password: userPass.password }},
 }).then(function(response) {
   console.log(response);
   console.log('response on login');
-  this.user = response.data.user;
+  controller.user = response.data.user;
   localStorage.setItem('token', JSON.stringify(response.data.token));
-}.bind(this), function(error){
+}, function(error){
   console.log('I sskipped the response')
 });
 // }
@@ -298,14 +299,15 @@ $http({
 //     if (response.data.status == 401) {
 //         this.error = "Unauthorized";
 //     } else {
-//       this.users = response.data;
+//       controller.users = response.data;
 //     }
-//   }.bind(this));
+//   });
 // }
 
 //logout //
 
 this.logout = function() {
+  console.log('logout');
 localStorage.clear('token');
 location.reload();
 }
