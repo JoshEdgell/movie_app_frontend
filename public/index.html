@@ -9,34 +9,61 @@
     <script src="/app.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="/style.css">
+
   </head>
   <body ng-controller="MainController as main">
 
+    <div class="container">
 
+      <div class="leftDiv">
 
-    <form ng-submit="main.searchByTitle(searchBox);">
-      Search Movies by Title: <input type="text" ng-model="searchBox"></input>
-      <button type="submit">Find Movie</button>
-    </form>
-
-      <div>
-
-        <p>Movie Title: {{main.foundMovie.title}}</p>
-        <p>Starring: {{main.foundMovie.actors}}<p>
-        <p>Rating: {{main.foundMovie.rating}}</p>
-        <p>Year Released: {{main.foundMovie.year_released}}</p>
-        <p>Genre: {{main.foundMovie.genre}}</p>
-        <p>Director: {{main.foundMovie.director}}</p>
-        <p>Plot: {{main.foundMovie.plot}}</p>
-        <p>Rotten Tomatoes Score: {{main.foundMovie.rotten_tomatoes_score}}</p>
-        <img ng-src={{main.foundMovie.poster}}>
-
-        <form ng-submit="main.addMovieToDatabase();">
-          Add a Review: <input type="text"></input>
-          <button type="submit">Add Review</button>
-        </form>
+        <div class="searchMovies">
+          <form ng-submit="main.searchAllNames(searchBox);">
+            Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
+            <button type="submit">Find Movie</button>
+          </form>
+        </div>
 
       </div>
+
+      <div class="centerDiv">
+
+        <!-- Display the results of a search for a movie -->
+
+        <div class="displayResults" ng-if="main.displaySearchResults">
+          <div class="foundMovie" ng-repeat="movie in main.searchResults">
+            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview(movie.imdbID)">
+            <h4>{{movie.Title}}</h4>
+            <p>Released: {{movie.Year}}</p>
+          </div>
+        </div>
+
+          <!-- Display single movie after selection -->
+
+        <div ng-if="main.displaySingleMovie">
+          <div class="singleMovie">
+            <div class="infoDiv">
+              <h2>{{main.currentMovie.title}}</h2>
+              <p>Starring: {{main.currentMovie.actors}}</p>
+              <p>Rating: {{main.currentMovie.rating}}     Year Released: {{main.currentMovie.year_released}}</p>
+              <p>Director: {{main.currentMovie.director}}</p>
+              <p>Synopsis: {{main.currentMovie.plot}}</p>
+              <p>Rotten Tomatoes Score: {{main.currentMovie.rotten_tomatoes_score}}</p>
+            </div>
+            <img class="infoPoster" ng-src="{{main.currentMovie.poster}}">
+          </div>
+          <button ng-click="main.addMovieToDatabase();">Add to Database</button>
+        </div>
+
+
+      </div>
+
+      <div class="rightDiv">
+      </div>
+
+    </div>
+
+
     </form>
   </body>
 </html>
