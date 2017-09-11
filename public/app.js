@@ -2,21 +2,35 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
-  this.url = 'http://localhost:3000/'
+  this.url = 'http://localhost:3000/';
   this.allMovies = [];
+  // =====INSERT===
+  this.user = {};
+  // =====INSERT===
   this.allUsers = [];
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
+  this.currentReview = {};
+  this.currentUser = {
+    id: 1,
+    user: 'JoshEdgell',
+    first_name: 'Josh',
+    last_name: 'Edgell',
+    age: 36,
+    gender: 'M'
+  };
   this.newReviewText = '';
   this.requestedMovieId = 0;
   this.displaySearchForm = true;
   this.displaySearchResults = false;
   this.displaySingleMovie = false;
+  this.displayReviewEdit = false;
   this.hideAllCenterDivs = function(){
     this.displaySearchResults = false;
     this.displaySingleMovie = false;
     this.displaySearchForm = false;
+    this.displayReviewEdit = false;
   };
   this.getAllApiMovies = function(){
     // Return the data for all of the movies in our database
@@ -77,6 +91,7 @@ app.controller('MainController', ['$http', function($http){
       }).then(function(response){
         controller.currentMovie = response.data;
         controller.hideAllCenterDivs();
+        controller.reverseReviewOrder(controller.currentMovie.reviews);
         controller.displaySingleMovie = true;
       }, function(error){
         console.log(error);
@@ -125,10 +140,156 @@ app.controller('MainController', ['$http', function($http){
       this.fiveMostRecentMovies.push(this.allMovies[this.allMovies.length - (i + 1)]);
     }
   };
-
-
-
+  this.addReviewToMovie = function(imdbid){
+    //First, check to see if the movie exists in our database.
+    //If the movie is in our database, post the review to the reviews table (linked to the current movie)
+    //If the movie is not in our database, add the movie to the database, then add the review to the newly-created movie.
+    if (this.checkMovieList(imdbid) == true) {
+      $http({
+        method: 'post',
+        url: this.url + 'reviews',
+        data: {
+          user_id: this.currentUser.id,
+          movie_id: this.currentMovie.id,
+          review_text: this.newReviewText
+        }
+      }).then(function(response){
+        controller.getAllApiMovies();
+        controller.hideAllCenterDivs();
+        controller.newReviewText = '';
+        controller.displaySearchForm = true;
+      }, function(error){
+        console.log(error, 'error from add review to existing movie')
+      })
+    } else {
+      $http({
+        method: 'post',
+        url: this.url + 'movies',
+        data: this.currentMovie
+      }).then(function(response){
+        controller.currentMovie.id = response.data.id;
+          $http({
+            method: 'post',
+            url: controller.url + 'reviews',
+            data: {
+              user_id: controller.currentUser.id,
+              movie_id: controller.currentMovie.id,
+              review_text: controller.newReviewText
+            }
+          })
+        }).then(function(response){
+          controller.newReviewText = '';
+          controller.getAllApiMovies();
+          controller.hideAllCenterDivs();
+          controller.displaySearchForm = true;
+        },function(error){
+          console.log(error, 'error from adding review to new movie');
+        })
+      }
+    };
+  this.deleteReview = function(id){
+    $http({
+      method: 'delete',
+      url: this.url + 'reviews/' + id
+    }).then(function(response){
+      controller.hideAllCenterDivs();
+      controller.displaySearchForm = true;
+    }, function(error){
+      console.log(error, 'error from delete route');
+    })
+  };
+  this.reverseReviewOrder = function(array){
+    newArray = [];
+    for (let i = array.length - 1; i >= 0; i--){
+      newArray.push(array[i]);
+    }
+    this.currentMovie.reviews = newArray;
+  };
+  this.editReview = function(id){
+    $http({
+      method: 'get',
+      url: this.url + 'reviews/' + id
+    }).then(function(response){
+      controller.currentReview = response.data;
+      controller.hideAllCenterDivs();
+      controller.displayReviewEdit = true;
+      console.log(controller.currentReview);
+    }, function(error){
+      console.log(error,'review error')
+    })
+  };
+  this.publishReviewEdit = function(){
+    $http({
+      method: 'put',
+      url: this.url + 'reviews/' + this.currentReview.id,
+      data: this.currentReview
+    }).then(function(response){
+      console.log(response,'response from review edit');
+    }, function(error){
+      console.log(error, 'error from review edit');
+    })
+  }
 
   this.getAllApiMovies();
   this.getAllUsers();
+
+// ============LOGIN METHODS BELOW=========
+
+//user account create///
+   this.CreateUser = function(userPass) {
+     $http({
+       url: this.url + '/users',
+       method: 'POST',
+       data: { user: { username: userPass.username, password: userPass.password }},
+     }).then(function(response) {
+       console.log(response);
+       this.user = response.data.user;
+     })
+   }
+
+// /user login///
+
+this.login = function(userPass) {
+console.log(userPass);
+
+$http({
+  method: 'POST',
+  url: this.url + '/users/login',
+  data: { user: { username: userPass.username, password: userPass.password }},
+}).then(function(response) {
+  console.log(response);
+  this.user = response.data.user;
+  localStorage.setItem('token', JSON.stringify(response.data.token));
+}.bind(this));
+// }
+}
+
+
+// ===test method below. may want to disable once login tests sucessful===
+this.getUsers = function() {
+  $http({
+    url: this.url + '/users',
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+    }
+  }).then(function(response) {
+    console.log(response);
+    if (response.data.status == 401) {
+        this.error = "Unauthorized";
+    } else {
+      this.users = response.data;
+    }
+  }.bind(this));
+}
+
+//logout //
+
+this.logout = function() {
+localStorage.clear('token');
+location.reload();
+}
+
+// ============END LOGIN METHODS=========
+
 }])
