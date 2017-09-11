@@ -66,7 +66,7 @@
             <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null">
               <p>This movie has no reviews. Be the first to add one.</p>
               <textarea ng-model="ctrl.newReviewText"></textarea>
-              <button ng-click="ctrl.addReviewToMovie();">Add Review</button>
+              <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
             </div>
 
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length != null">
@@ -75,7 +75,7 @@
                   <button>Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
                 </div>
               <textarea ng-model="ctrl.newReviewText"></textarea>
-              <button ng-click="ctrl.addReviewToMovie();">Add Review</button>
+              <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
             </div>
 
             </div>

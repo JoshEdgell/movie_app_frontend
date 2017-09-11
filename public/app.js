@@ -134,24 +134,60 @@ app.controller('MainController', ['$http', function($http){
       this.fiveMostRecentMovies.push(this.allMovies[this.allMovies.length - (i + 1)]);
     }
   };
-  this.addReviewToMovie = function(){
-    $http({
-      method: 'post',
-      url: this.url + 'reviews',
-      data: {
-        user_id: this.currentUser.id,
-        movie_id: this.currentMovie.id,
-        review_text: this.newReviewText
+  this.addReviewToMovie = function(imdbid){
+    //First, check to see if the movie exists in our database.
+    //If the movie is in our database, post the review to the reviews table (linked to the current movie)
+    //If the movie is not in our database, add the movie to the database, then add the review to the newly-created movie.
+    console.log(imdbid);
+    if (this.checkMovieList(imdbid) == true) {
+      $http({
+        method: 'post',
+        url: this.url + 'reviews',
+        data: {
+          user_id: this.currentUser.id,
+          movie_id: this.currentMovie.id,
+          review_text: this.newReviewText
+        }
+      }).then(function(response){
+        controller.getAllApiMovies();
+        controller.hideAllCenterDivs();
+        controller.newReviewText = '';
+        controller.displaySearchForm = true;
+      }, function(error){
+        console.log(error, 'error from add review to existing movie')
+      })
+    } else {
+      $http({
+        method: 'post',
+        url: this.url + 'movies',
+        data: this.currentMovie
+      }).then(function(response){
+        console.log(response.data.id);
+        controller.currentMovie.id = response.data.id;
+          $http({
+            method: 'post',
+            url: controller.url + 'reviews',
+            data: {
+              user_id: controller.currentUser.id,
+              movie_id: controller.currentMovie.id,
+              review_text: controller.newReviewText
+            }
+          })
+        }).then(function(response){
+          controller.getAllApiMovies();
+          controller.hideAllCenterDivs();
+          controller.displaySearchForm = true;
+        },function(error){
+          console.log(error, 'error from adding review to new movie');
+        })
       }
-    }).then(function(response){
-      controller.getAllApiMovies();
-      controller.hideAllCenterDivs();
-      controller.newReviewText = '';
-      controller.displaySearchForm = true;
-    }, function(error){
-      console.log(error)
-    })
-  };
+    };
+
+
+
+
+
+
   this.deleteReview = function(id){
     $http({
       method: 'delete',
