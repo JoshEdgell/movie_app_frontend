@@ -11,61 +11,40 @@
     <link rel="stylesheet" href="/style.css">
 
   </head>
+
   <body ng-controller="MainController as ctrl">
 
-
-<!-- =========LOGIN INFO BELOW============= -->
-    <!-- //login form// -->
-        <form ng-submit="ctrl.login(userPass)">
-          <input type="text" ng-model="userPass.username" placeholder="username"/>
-          <input type="password" ng-model="userPass.password" placeholder="password"/>
-          <input type="submit"/>
-        </form>
-    <!-- register form -->
-        <form ng-submit="ctrl.CreateUser(userPass)">
-          <input type="text" ng-model="userPass.username" placeholder="username"/>
-          <input type="password" ng-model="userPass.password" placeholder="password"/>
-          <input type="submit"/>
-        </form>
-
-        <!-- //logout// -->
-
-        <a href="#" ng-click="ctrl.logout()">Log Out</a>
-    <!-- //test text below// -->
-        <p>Logged in username: {{ ctrl.user.username }} </p>
-
-        <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
-
-        <div> {{ ctrl.error }} </div>
-
-        <div ng-repeat="user in ctrl.users">
-          <h1>{{ user.username }}</h1>
-        </div>
-        <!-- ///end test text// -->
-
-<!-- =========END LOGIN INFO============= -->
-
+    <h1>It's Movie Time!</h1>
 
     <div class="container">
 
       <div class="leftDiv">
 
-        <div class="searchMovies">
-          <form ng-submit="main.searchAllNames(searchBox);">
-            Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
-            <button type="submit">Find Movie</button>
-          </form>
+        <div class="recentsDiv">
+          <h3>Recent Additions</h3>
+          <div class="recentMoviePosters" ng-repeat="movie in ctrl.fiveMostRecentMovies">
+            <img ng-src="{{movie.poster}}" class="recentMoviePoster" ng-click='ctrl.selectMovieToAddReview(movie.imdbid)'>
+          </div>
         </div>
 
       </div>
 
       <div class="centerDiv">
 
+          <!-- Search Form -->
+
+        <div class="searchMovies" ng-if="ctrl.displaySearchForm">
+          <form ng-submit="ctrl.searchAllNames(searchBox);">
+            Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
+            <button type="submit">Find Movie</button>
+          </form>
+        </div>
+
         <!-- Display the results of a search for a movie -->
 
-        <div class="displayResults" ng-if="main.displaySearchResults">
-          <div class="foundMovie" ng-repeat="movie in main.searchResults">
-            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview(movie.imdbID)">
+        <div class="displayResults" ng-if="ctrl.displaySearchResults">
+          <div class="foundMovie" ng-repeat="movie in ctrl.searchResults">
+            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="ctrl.selectMovieToAddReview(movie.imdbID)">
             <h4>{{movie.Title}}</h4>
             <p>Released: {{movie.Year}}</p>
           </div>
@@ -73,25 +52,109 @@
 
           <!-- Display single movie after selection -->
 
-        <div ng-if="main.displaySingleMovie">
+        <div ng-if="ctrl.displaySingleMovie">
           <div class="singleMovie">
             <div class="infoDiv">
-              <h2>{{main.currentMovie.title}}</h2>
-              <p>Starring: {{main.currentMovie.actors}}</p>
-              <p>Rating: {{main.currentMovie.rating}}     Year Released: {{main.currentMovie.year_released}}</p>
-              <p>Director: {{main.currentMovie.director}}</p>
-              <p>Synopsis: {{main.currentMovie.plot}}</p>
-              <p>Rotten Tomatoes Score: {{main.currentMovie.rotten_tomatoes_score}}</p>
+              <h2>{{ctrl.currentMovie.title}}</h2>
+              <p>Starring: {{ctrl.currentMovie.actors}}</p>
+              <p>Rating: {{ctrl.currentMovie.rating}}     Year Released: {{ctrl.currentMovie.year_released}}</p>
+              <p>Director: {{ctrl.currentMovie.director}}</p>
+              <p>Synopsis: {{ctrl.currentMovie.plot}}</p>
+              <p>Rotten Tomatoes Score: {{ctrl.currentMovie.rotten_tomatoes_score}}</p>
+
+            <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null || ctrl.currentMovie.reviews.length == 0">
+              <p>This movie has no reviews. Be the first to add one.</p>
+              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
             </div>
-            <img class="infoPoster" ng-src="{{main.currentMovie.poster}}">
+
+            <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length == 1">
+              <p>This movie has 1 review.</p>
+                <div class="movieReview" ng-repeat="review in ctrl.currentMovie.reviews">
+                  <p>{{review.review_text}}</p>
+                  <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+                </div>
+              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
+            </div>
+
+            <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length > 1">
+              <p>This movie has {{ctrl.currentMovie.reviews.length}} reviews.</p>
+                <div class="movieReview" ng-repeat="review in ctrl.currentMovie.reviews">
+                  <p>{{review.review_text}}</p>
+                  <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+                </div>
+              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
+            </div>
+
+            </div>
+            <img class="infoPoster" ng-src="{{ctrl.currentMovie.poster}}">
           </div>
-          <button ng-click="main.addMovieToDatabase();">Add to Database</button>
         </div>
 
+                <!-- Edit Movie Review -->
+
+        <div ng-if="ctrl.displayReviewEdit">
+          <div class="singleMovie">
+            <div class="infoDiv">
+              <h2>{{ctrl.currentMovie.title}}</h2>
+              <p>Starring: {{ctrl.currentMovie.actors}}</p>
+              <p>Rating: {{ctrl.currentMovie.rating}}     Year Released: {{ctrl.currentMovie.year_released}}</p>
+              <p>Director: {{ctrl.currentMovie.director}}</p>
+              <p>Synopsis: {{ctrl.currentMovie.plot}}</p>
+              <p>Rotten Tomatoes Score: {{ctrl.currentMovie.rotten_tomatoes_score}}</p>
+
+              <div class="editReview">
+                <textarea ng-model="ctrl.currentReview.review_text"></textarea>
+                <button ng-click="ctrl.publishReviewEdit();">Publish Review</button>
+              </div>
+
+            </div>
+            <img class="infoPoster" ng-src="{{ctrl.currentMovie.poster}}">
+          </div>
+        </div>
 
       </div>
 
       <div class="rightDiv">
+
+            <!-- //login form// -->
+            <div class="login" ng-if="ctrl.displayLogin">
+              <h3>Login</h3>
+                <form ng-submit="ctrl.login(userPass)">
+                  <input type="text" class="loginForm" ng-model="userPass.username" placeholder="username"/>
+                  <input type="password" class="loginForm" ng-model="userPass.password" placeholder="password"/>
+                </br><input type="submit" class="formSubmit"/>
+                </form>
+                <p class="noAccount">Don't have an account? </br></p><p class="createAccount"><a href="#" ng-click="ctrl.displayRegistrationDiv();">Create one now</a></p>
+            </div>
+            <!-- register form -->
+            <div class="register" ng-if="ctrl.displayRegistration">
+              <h3>Register New User</h3>
+                <form ng-submit="ctrl.CreateUser(userPass)">
+                  <input type="text" class="registerForm" ng-model="userPass.username" placeholder="username"/>
+                  <input type="password" class="registerForm" ng-model="userPass.password" placeholder="password"/>
+                </br><input type="submit" class="registerFormSubmit"/>
+                </form>
+            </div>
+
+                <!-- //logout// -->
+
+                <a href="#" ng-click="ctrl.logout()" ng-if="ctrl.displayLogout">Log Out</a>
+            <!-- //test text below// -->
+                <p>Logged in username: {{ ctrl.user.username }} </p>
+
+                <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
+
+                <div> {{ ctrl.error }} </div>
+
+                <div ng-repeat="user in ctrl.users">
+                  <h1>{{ user.username }}</h1>
+                </div>
+                <!-- ///end test text// -->
+
+        <!-- =========END LOGIN INFO============= -->
       </div>
 
     </div>
