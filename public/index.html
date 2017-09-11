@@ -14,38 +14,7 @@
 
   <body ng-controller="MainController as ctrl">
 
-
-<!-- =========LOGIN INFO BELOW============= -->
-    <!-- //login form// -->
-        <form ng-submit="ctrl.login(userPass)">
-          <input type="text" ng-model="userPass.username" placeholder="username"/>
-          <input type="password" ng-model="userPass.password" placeholder="password"/>
-          <input type="submit"/>
-        </form>
-    <!-- register form -->
-        <form ng-submit="ctrl.CreateUser(userPass)">
-          <input type="text" ng-model="userPass.username" placeholder="username"/>
-          <input type="password" ng-model="userPass.password" placeholder="password"/>
-          <input type="submit"/>
-        </form>
-
-        <!-- //logout// -->
-
-        <a href="#" ng-click="ctrl.logout()">Log Out</a>
-    <!-- //test text below// -->
-        <p>Logged in username: {{ ctrl.user.username }} </p>
-
-        <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
-
-        <div> {{ ctrl.error }} </div>
-
-        <div ng-repeat="user in ctrl.users">
-          <h1>{{ user.username }}</h1>
-        </div>
-        <!-- ///end test text// -->
-
-<!-- =========END LOGIN INFO============= -->
-
+    <h1>It's Movie Time!</h1>
 
     <div class="container">
 
@@ -57,8 +26,6 @@
             <img ng-src="{{movie.poster}}" class="recentMoviePoster" ng-click='ctrl.selectMovieToAddReview(movie.imdbid)'>
           </div>
         </div>
-
-
 
       </div>
 
@@ -151,6 +118,43 @@
       </div>
 
       <div class="rightDiv">
+
+            <!-- //login form// -->
+            <div class="login" ng-if="ctrl.displayLogin">
+              <h3>Login</h3>
+                <form ng-submit="ctrl.login(userPass)">
+                  <input type="text" class="loginForm" ng-model="userPass.username" placeholder="username"/>
+                  <input type="password" class="loginForm" ng-model="userPass.password" placeholder="password"/>
+                </br><input type="submit" class="formSubmit"/>
+                </form>
+                <p class="noAccount">Don't have an account? </br></p><p class="createAccount"><a href="#" ng-click="ctrl.displayRegistrationDiv();">Create one now</a></p>
+            </div>
+            <!-- register form -->
+            <div class="register" ng-if="ctrl.displayRegistration">
+              <h3>Register New User</h3>
+                <form ng-submit="ctrl.CreateUser(userPass)">
+                  <input type="text" class="registerForm" ng-model="userPass.username" placeholder="username"/>
+                  <input type="password" class="registerForm" ng-model="userPass.password" placeholder="password"/>
+                </br><input type="submit" class="registerFormSubmit"/>
+                </form>
+            </div>
+
+                <!-- //logout// -->
+
+                <a href="#" ng-click="ctrl.logout()" ng-if="ctrl.displayLogout">Log Out</a>
+            <!-- //test text below// -->
+                <p>Logged in username: {{ ctrl.user.username }} </p>
+
+                <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
+
+                <div> {{ ctrl.error }} </div>
+
+                <div ng-repeat="user in ctrl.users">
+                  <h1>{{ user.username }}</h1>
+                </div>
+                <!-- ///end test text// -->
+
+        <!-- =========END LOGIN INFO============= -->
       </div>
 
     </div>

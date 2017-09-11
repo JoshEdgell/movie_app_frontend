@@ -4,9 +4,7 @@ app.controller('MainController', ['$http', function($http){
   const controller = this;
   this.url = 'http://localhost:3000/';
   this.allMovies = [];
-  // =====INSERT===
   this.user = {};
-  // =====INSERT===
   this.allUsers = [];
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
@@ -22,10 +20,15 @@ app.controller('MainController', ['$http', function($http){
   };
   this.newReviewText = '';
   this.requestedMovieId = 0;
+  // Center Div Displays
   this.displaySearchForm = true;
   this.displaySearchResults = false;
   this.displaySingleMovie = false;
   this.displayReviewEdit = false;
+  // Right Div Displays
+  this.displayLogin = true;
+  this.displayRegistration = false;
+  this.displayLogout = false;
   this.hideAllCenterDivs = function(){
     this.displaySearchResults = false;
     this.displaySingleMovie = false;
@@ -231,14 +234,23 @@ app.controller('MainController', ['$http', function($http){
       console.log(error, 'error from review edit');
     })
   };
+  this.displayRegistrationDiv = function(){
+    this.displayRegistration = true;
+    this.displayLogin = false;
+  }
 
+
+
+    // =============Put at bottom when finished=============
   this.getAllApiMovies();
   // this.getAllUsers();
+  // =======================================================
 
 // ============LOGIN METHODS BELOW=========
 
 //user account create///
    this.CreateUser = function(userPass) {
+     this.displayLogout = true;
      console.log('creating user');
      $http({
        method: 'POST',
