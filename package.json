@@ -1,7 +1,6 @@
 {
   "name": "movie_app_frontend",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,5 +12,14 @@
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "lodash": "^4.17.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshEdgell/movie_app_frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoshEdgell/movie_app_frontend/issues"
+  },
+  "homepage": "https://github.com/JoshEdgell/movie_app_frontend#readme",
+  "description": ""
 }

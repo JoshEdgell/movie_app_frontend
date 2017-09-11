@@ -2,8 +2,11 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
-  this.url = 'http://localhost:3000/'
+  this.url = 'http://localhost:3000/';
   this.allMovies = [];
+  // =====INSERT===
+  this.user = {};
+  // =====INSERT===
   this.allUsers = [];
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
@@ -126,9 +129,66 @@ app.controller('MainController', ['$http', function($http){
     }
   };
 
-
-
-
   this.getAllApiMovies();
   this.getAllUsers();
+
+// ============LOGIN METHODS BELOW=========
+
+//user account create///
+   this.CreateUser = function(userPass) {
+     $http({
+       url: this.url + '/users',
+       method: 'POST',
+       data: { user: { username: userPass.username, password: userPass.password }},
+     }).then(function(response) {
+       console.log(response);
+       this.user = response.data.user;
+     })
+   }
+
+// /user login///
+
+this.login = function(userPass) {
+console.log(userPass);
+
+$http({
+  method: 'POST',
+  url: this.url + '/users/login',
+  data: { user: { username: userPass.username, password: userPass.password }},
+}).then(function(response) {
+  console.log(response);
+  this.user = response.data.user;
+  localStorage.setItem('token', JSON.stringify(response.data.token));
+}.bind(this));
+// }
+}
+
+
+// ===test method below. may want to disable once login tests sucessful===
+this.getUsers = function() {
+  $http({
+    url: this.url + '/users',
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+    }
+  }).then(function(response) {
+    console.log(response);
+    if (response.data.status == 401) {
+        this.error = "Unauthorized";
+    } else {
+      this.users = response.data;
+    }
+  }.bind(this));
+}
+
+//logout //
+
+this.logout = function() {
+localStorage.clear('token');
+location.reload();
+}
+
+// ============END LOGIN METHODS=========
+
 }])
