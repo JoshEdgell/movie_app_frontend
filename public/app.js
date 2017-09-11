@@ -85,6 +85,7 @@ app.controller('MainController', ['$http', function($http){
       }).then(function(response){
         controller.currentMovie = response.data;
         controller.hideAllCenterDivs();
+        controller.reverseReviewOrder(controller.currentMovie.reviews);
         controller.displaySingleMovie = true;
       }, function(error){
         console.log(error);
@@ -161,6 +162,13 @@ app.controller('MainController', ['$http', function($http){
     }, function(error){
       console.log(error, 'error from delete route');
     })
+  };
+  this.reverseReviewOrder = function(array){
+    newArray = [];
+    for (let i = array.length - 1; i >= 0; i--){
+      newArray.push(array[i]);
+    }
+    this.currentMovie.reviews = newArray;
   };
 
 
