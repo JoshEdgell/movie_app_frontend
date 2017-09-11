@@ -221,11 +221,12 @@ app.controller('MainController', ['$http', function($http){
       url: this.url + 'reviews/' + this.currentReview.id,
       data: this.currentReview
     }).then(function(response){
-      console.log(response,'response from review edit');
+      controller.hideAllCenterDivs();
+      controller.displaySearchForm = true;
     }, function(error){
       console.log(error, 'error from review edit');
     })
-  }
+  };
 
 
 
