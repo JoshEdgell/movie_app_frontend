@@ -6,12 +6,45 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <!-- JavaScript -->
-    <script src="/app.js"></script>
+    <script src="app.js"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="/style.css">
 
   </head>
   <body ng-controller="MainController as main">
+
+
+<!-- =========LOGIN INFO BELOW============= -->
+    <!-- //login form// -->
+        <form ng-submit="ctrl.login(userPass)">
+          <input type="text" ng-model="userPass.username" placeholder="username"/>
+          <input type="password" ng-model="userPass.password" placeholder="password"/>
+          <input type="submit"/>
+        </form>
+    <!-- register form -->
+        <form ng-submit="ctrl.CreateUser(userPass)">
+          <input type="text" ng-model="userPass.username" placeholder="username"/>
+          <input type="password" ng-model="userPass.password" placeholder="password"/>
+          <input type="submit"/>
+        </form>
+
+        <!-- //logout// -->
+
+        <a href="#" ng-click="ctrl.logout()">Log Out</a>
+    <!-- //test text below// -->
+        <p>Logged in username: {{ ctrl.user.username }} </p>
+
+        <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
+
+        <div> {{ ctrl.error }} </div>
+
+        <div ng-repeat="user in ctrl.users">
+          <h1>{{ user.username }}</h1>
+        </div>
+        <!-- ///end test text// -->
+
+<!-- =========END LOGIN INFO============= -->
+
 
     <div class="container">
 
