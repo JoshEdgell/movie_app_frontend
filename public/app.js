@@ -126,8 +126,8 @@ app.controller('MainController', ['$http', function($http){
    this.CreateUser = function(userPass) {
      console.log('creating user');
      $http({
-       url: this.url + 'users',
        method: 'POST',
+       url: this.url + 'users',
        data: { user: { username: userPass.username, password_digest: userPass.password }},
      }).then(function(response) {
        console.log(response);
