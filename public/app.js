@@ -32,8 +32,9 @@ app.controller('MainController', ['$http', function($http){
       method: 'get',
       url: this.url + 'users'
     }).then(function(response){
-      response.data.forEach(function(a){delete a.password});
-      controller.allUsers = response.data;
+      // response.data.forEach(function(a){delete a.password});
+      // controller.allUsers = response.data;
+      console.log('password stuff');
     }, function(error){
       console.log(error, 'getAllUsers')
     })
@@ -117,16 +118,17 @@ app.controller('MainController', ['$http', function($http){
   };
 
   this.getAllApiMovies();
-  this.getAllUsers();
+  // this.getAllUsers();
 
 // ============LOGIN METHODS BELOW=========
 
 //user account create///
    this.CreateUser = function(userPass) {
+     console.log('creating user');
      $http({
-       url: this.url + '/users',
+       url: this.url + 'users',
        method: 'POST',
-       data: { user: { username: userPass.username, password: userPass.password }},
+       data: { user: { username: userPass.username, password_digest: userPass.password }},
      }).then(function(response) {
        console.log(response);
        this.user = response.data.user;
@@ -136,38 +138,43 @@ app.controller('MainController', ['$http', function($http){
 // /user login///
 
 this.login = function(userPass) {
+     console.log('login user');
 console.log(userPass);
 
 $http({
+
   method: 'POST',
-  url: this.url + '/users/login',
-  data: { user: { username: userPass.username, password: userPass.password }},
+  url: this.url + 'users/login',
+  data: { user: { username: userPass.username, password_digest: userPass.password }},
 }).then(function(response) {
   console.log(response);
+  console.log('response on login');
   this.user = response.data.user;
   localStorage.setItem('token', JSON.stringify(response.data.token));
-}.bind(this));
+}.bind(this), function(error){
+  console.log('I sskipped the response')
+});
 // }
 }
 
 
 // ===test method below. may want to disable once login tests sucessful===
-this.getUsers = function() {
-  $http({
-    url: this.url + '/users',
-    method: 'GET',
-    headers: {
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
-    }
-  }).then(function(response) {
-    console.log(response);
-    if (response.data.status == 401) {
-        this.error = "Unauthorized";
-    } else {
-      this.users = response.data;
-    }
-  }.bind(this));
-}
+// this.getUsers = function() {
+//   $http({
+//     url: this.url + '/users',
+//     method: 'GET',
+//     headers: {
+//       Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+//     }
+//   }).then(function(response) {
+//     console.log(response);
+//     if (response.data.status == 401) {
+//         this.error = "Unauthorized";
+//     } else {
+//       this.users = response.data;
+//     }
+//   }.bind(this));
+// }
 
 //logout //
 
