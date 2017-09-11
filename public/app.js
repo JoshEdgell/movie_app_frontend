@@ -120,11 +120,11 @@ app.controller('MainController', ['$http', function($http){
     })
   };
   this.getFiveMostRecent = function(){
+    this.fiveMostRecentMovies = [];
     for (let i = 0; i < 5; i++){
       this.fiveMostRecentMovies.push(this.allMovies[this.allMovies.length - (i + 1)]);
     }
-    console.log(this.fiveMostRecentMovies, 'five most recent movies');
-  }
+  };
 
 
 

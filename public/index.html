@@ -21,7 +21,7 @@
         <div class="recentsDiv">
           <h3>Recent Additions</h3>
           <div class="recentMoviePosters" ng-repeat="movie in ctrl.fiveMostRecentMovies">
-            <img ng-src="{{movie.poster}}" class="recentMoviePoster">
+            <img ng-src="{{movie.poster}}" class="recentMoviePoster" ng-click='ctrl.selectMovieToAddReview(movie.imdbid)'>
           </div>
         </div>
 
