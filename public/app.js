@@ -34,7 +34,7 @@ app.controller('MainController', ['$http', function($http){
       method: 'get',
       url: this.url + 'users'
     }).then(function(response){
-      response.data.forEach(function(a){delete a.password});
+      response.data.forEach(function(a){delete a.password_digest});
       controller.allUsers = response.data;
     }, function(error){
       console.log(error, 'getAllUsers')
