@@ -5,14 +5,18 @@ app.controller('MainController', ['$http', function($http){
   this.url = 'http://localhost:3000/'
   this.allMovies = [];
   this.allUsers = [];
+  this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
+  this.newReviewText = '';
   this.requestedMovieId = 0;
+  this.displaySearchForm = true;
   this.displaySearchResults = false;
   this.displaySingleMovie = false;
   this.hideAllCenterDivs = function(){
     this.displaySearchResults = false;
     this.displaySingleMovie = false;
+    this.displaySearchForm = false;
   };
   this.getAllApiMovies = function(){
     // Return the data for all of the movies in our database
@@ -21,6 +25,7 @@ app.controller('MainController', ['$http', function($http){
       url: this.url + 'movies'
     }).then(function(response){
       controller.allMovies = response.data;
+      controller.getFiveMostRecent();
     })
   };
   this.getAllUsers = function(){
@@ -107,11 +112,19 @@ app.controller('MainController', ['$http', function($http){
       url: this.url + 'movies',
       data: this.currentMovie
     }).then(function(response){
-      console.log(response, 'response after add movie')
+      controller.getAllApiMovies();
+      controller.hideAllCenterDivs();
+      controller.displaySearchForm = true;
     }, function(error){
       console.log(error)
     })
   };
+  this.getFiveMostRecent = function(){
+    for (let i = 0; i < 5; i++){
+      this.fiveMostRecentMovies.push(this.allMovies[this.allMovies.length - (i + 1)]);
+    }
+    console.log(this.fiveMostRecentMovies, 'five most recent movies');
+  }
 
 
 

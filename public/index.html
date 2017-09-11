@@ -11,28 +11,40 @@
     <link rel="stylesheet" href="/style.css">
 
   </head>
-  <body ng-controller="MainController as main">
+  <h1>It's Movie Time!</h1>
+  <body ng-controller="MainController as ctrl">
 
     <div class="container">
 
       <div class="leftDiv">
 
-        <div class="searchMovies">
-          <form ng-submit="main.searchAllNames(searchBox);">
-            Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
-            <button type="submit">Find Movie</button>
-          </form>
+        <div class="recentsDiv">
+          <h3>Recent Additions</h3>
+          <div class="recentMoviePosters" ng-repeat="movie in ctrl.fiveMostRecentMovies">
+            <img ng-src="{{movie.poster}}" class="recentMoviePoster">
+          </div>
         </div>
+
+
 
       </div>
 
       <div class="centerDiv">
 
+          <!-- Search Form -->
+
+        <div class="searchMovies" ng-if="ctrl.displaySearchForm">
+          <form ng-submit="ctrl.searchAllNames(searchBox);">
+            Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
+            <button type="submit">Find Movie</button>
+          </form>
+        </div>
+
         <!-- Display the results of a search for a movie -->
 
-        <div class="displayResults" ng-if="main.displaySearchResults">
-          <div class="foundMovie" ng-repeat="movie in main.searchResults">
-            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="main.selectMovieToAddReview(movie.imdbID)">
+        <div class="displayResults" ng-if="ctrl.displaySearchResults">
+          <div class="foundMovie" ng-repeat="movie in ctrl.searchResults">
+            <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="ctrl.selectMovieToAddReview(movie.imdbID)">
             <h4>{{movie.Title}}</h4>
             <p>Released: {{movie.Year}}</p>
           </div>
@@ -40,19 +52,32 @@
 
           <!-- Display single movie after selection -->
 
-        <div ng-if="main.displaySingleMovie">
+        <div ng-if="ctrl.displaySingleMovie">
           <div class="singleMovie">
             <div class="infoDiv">
-              <h2>{{main.currentMovie.title}}</h2>
-              <p>Starring: {{main.currentMovie.actors}}</p>
-              <p>Rating: {{main.currentMovie.rating}}     Year Released: {{main.currentMovie.year_released}}</p>
-              <p>Director: {{main.currentMovie.director}}</p>
-              <p>Synopsis: {{main.currentMovie.plot}}</p>
-              <p>Rotten Tomatoes Score: {{main.currentMovie.rotten_tomatoes_score}}</p>
+              <h2>{{ctrl.currentMovie.title}}</h2>
+              <p>Starring: {{ctrl.currentMovie.actors}}</p>
+              <p>Rating: {{ctrl.currentMovie.rating}}     Year Released: {{ctrl.currentMovie.year_released}}</p>
+              <p>Director: {{ctrl.currentMovie.director}}</p>
+              <p>Synopsis: {{ctrl.currentMovie.plot}}</p>
+              <p>Rotten Tomatoes Score: {{ctrl.currentMovie.rotten_tomatoes_score}}</p>
+              Reviews: {{ctrl.currentMovie.reviews.length}}
+
+            <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null">
+              <p>This movie has no reviews. Be the first to add one.</p>
+              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <button ng-click="ctrl.addNewReview">Add Review</button>
             </div>
-            <img class="infoPoster" ng-src="{{main.currentMovie.poster}}">
+
+            <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length != null">
+              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <button ng-click="ctrl.addNewReview">Add Review</button>
+            </div>
+
+            </div>
+            <img class="infoPoster" ng-src="{{ctrl.currentMovie.poster}}">
           </div>
-          <button ng-click="main.addMovieToDatabase();">Add to Database</button>
+          <button ng-click="ctrl.addMovieToDatabase();">Add to Database</button>
         </div>
 
 
