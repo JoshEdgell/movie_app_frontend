@@ -151,6 +151,17 @@ app.controller('MainController', ['$http', function($http){
       console.log(error)
     })
   };
+  this.deleteReview = function(id){
+    $http({
+      method: 'delete',
+      url: this.url + 'reviews/' + id
+    }).then(function(response){
+      controller.hideAllCenterDivs();
+      controller.displaySearchForm = true;
+    }, function(error){
+      console.log(error, 'error from delete route');
+    })
+  };
 
 
 
