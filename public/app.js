@@ -237,6 +237,8 @@ app.controller('MainController', ['$http', function($http){
   this.returnToSearch = function(){
     console.log('hidedivs');
     controller.hideAllCenterDivs();
+
+    this.displaySearchForm = true;
   };
   this.getUserList = function(){
     $http({
@@ -288,6 +290,7 @@ app.controller('MainController', ['$http', function($http){
 
 
 
+
 // ============LOGIN METHODS BELOW=========
 
 //user account create///
@@ -321,7 +324,6 @@ $http({
 }).then(function(response) {
   console.log(response);
   console.log('response on login');
-  // $scope.loggedHello
   controller.user = response.data.user;
   console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
