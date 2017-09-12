@@ -37,7 +37,7 @@
           <!-- Search Form -->
 
         <div class="searchMovies" ng-if="ctrl.displaySearchForm">
-          <form ng-submit="ctrl.searchAllNames(searchBox);">
+          <form id="form" ng-submit="ctrl.searchAllNames(searchBox);">
             Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
             <button type="submit">Find Movie</button>
           </form>
@@ -68,8 +68,8 @@
 
             <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null || ctrl.currentMovie.reviews.length == 0">
               <p>This movie has no reviews. Be the first to add one.</p>
-              <textarea ng-model="ctrl.newReviewText"></textarea>
-              <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
+              <textarea rows="6" cols="50" ng-model="ctrl.newReviewText"></textarea>
+              <button class="reviewButton" ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
               <button ng-click="ctrl.returnToSearch();">Return to Search</button>
             </div>
 
@@ -85,7 +85,8 @@
 
 
                 </div>
-              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <textarea rows="6" cols="50
+            " ng-model="ctrl.newReviewText"></textarea>
               <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
             </div>
 
@@ -101,7 +102,7 @@
 
                 </div>
 
-              <textarea ng-model="ctrl.newReviewText"></textarea>
+              <textarea rows="6" cols="50" ng-model="ctrl.newReviewText"></textarea>
               <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
             </div>
 
@@ -199,5 +200,8 @@
 
 
     </form>
+    <footer>
+          <h6>created by Josh Edgell and Rick Neely</h6>
+        </footer>
   </body>
 </html>
