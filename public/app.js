@@ -2,6 +2,7 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
+  // this.url = 'https://moviereviewbackend.herokuapp.com/';
   this.url = 'http://localhost:3000/';
   this.allMovies = [];
   this.user = {};
@@ -145,6 +146,7 @@ app.controller('MainController', ['$http', function($http){
     }
   };
   this.addReviewToMovie = function(imdbid){
+    console.log(this.user, 'current user?');
     //First, check to see if the movie exists in our database.
     //If the movie is in our database, post the review to the reviews table (linked to the current movie)
     //If the movie is not in our database, add the movie to the database, then add the review to the newly-created movie.
