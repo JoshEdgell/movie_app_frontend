@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <!-- JavaScript -->
@@ -14,7 +16,8 @@
 
   <body ng-controller="MainController as ctrl">
 
-    <h1>MOVIEreviewr</h1>
+    <h1 id='titlepage'>MOVIEReviewr</h1>
+    <h4 id='subtitlepage'>A place to search, review, and recommend awesome movies</h4>
 
     <div class="container">
 
@@ -61,13 +64,13 @@
               <p>Director: {{ctrl.currentMovie.director}}</p>
               <p>Synopsis: {{ctrl.currentMovie.plot}}</p>
               <p>Rotten Tomatoes Score: {{ctrl.currentMovie.rotten_tomatoes_score}}</p>
-                  <button ng-click="ctrl.returnToSearch">Return to Search</button>
+                  <!-- <button ng-click="ctrl.returnToSearch();">Return to Search</button> -->
 
             <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null || ctrl.currentMovie.reviews.length == 0">
               <p>This movie has no reviews. Be the first to add one.</p>
               <textarea ng-model="ctrl.newReviewText"></textarea>
               <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
-              <button ng-click="ctrl.returnToSearch">Return to Search</button>
+              <button ng-click="ctrl.returnToSearch();">Return to Search</button>
             </div>
 
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length == 1">
