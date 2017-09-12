@@ -2,8 +2,8 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
-  // this.url = 'https://moviereviewerbackend.herokuapp.com/';
-  this.url = 'http://localhost:3000/';
+  this.url = 'https://moviereviewerbackend.herokuapp.com/';
+  // this.url = 'http://localhost:3000/';
   this.allMovies = [];
   this.newUser = {};
   this.user = {};
@@ -152,6 +152,7 @@ app.controller('MainController', ['$http', function($http){
       }).then(function(response){
         controller.getAllApiMovies();
         controller.hideAllCenterDivs();
+        controller.getUserList();
         controller.newReviewText = '';
         controller.displaySearchForm = true;
       }, function(error){
@@ -177,6 +178,7 @@ app.controller('MainController', ['$http', function($http){
           controller.newReviewText = '';
           controller.getAllApiMovies();
           controller.hideAllCenterDivs();
+          controller.getUserList();
           controller.displaySearchForm = true;
         },function(error){
           console.log(error, 'error from adding review to new movie');
@@ -318,7 +320,7 @@ $http({
 }).then(function(response) {
   console.log(response);
   console.log('response on login');
-  $scope.loggedHello
+  // $scope.loggedHello
   controller.user = response.data.user;
   console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
