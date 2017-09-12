@@ -61,11 +61,13 @@
               <p>Director: {{ctrl.currentMovie.director}}</p>
               <p>Synopsis: {{ctrl.currentMovie.plot}}</p>
               <p>Rotten Tomatoes Score: {{ctrl.currentMovie.rotten_tomatoes_score}}</p>
+                  <button ng-click="ctrl.returnToSearch">Return to Search</button>
 
             <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null || ctrl.currentMovie.reviews.length == 0">
               <p>This movie has no reviews. Be the first to add one.</p>
               <textarea ng-model="ctrl.newReviewText"></textarea>
               <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
+              <button ng-click="ctrl.returnToSearch">Return to Search</button>
             </div>
 
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length == 1">
@@ -132,12 +134,16 @@
             <!-- register form -->
             <div class="register" ng-if="ctrl.displayRegistration">
               <h3>Register New User</h3>
-                <form ng-submit="ctrl.CreateUser()">
-                  <input type="text" class="registerForm" ng-model="ctrl.newUser.username" placeholder="username"/>
-                  <input type="password" class="registerForm" ng-model="ctrl.newUser.password" placeholder="password"/>
-                  <input type="text" class="registerForm" ng-model="ctrl.newUser.age" placeholder="age"/>
-                  <input type="text" class="registerForm" ng-model="ctrl.newUser.first_name" placeholder="firstname"/>
-                  <input type="text" class="registerForm" ng-model="ctrl.newUser.last_name" placeholder="lastname"/>
+
+                <form ng-submit="ctrl.CreateUser(userPass)">
+
+                  <input type="text" class="registerForm" ng-model="userPass.username" placeholder="username"/>
+                  <input type="password" class="registerForm" ng-model="userPass.password" placeholder="password"/>
+                  <input type="text" class="registerForm" ng-model="userPass.first_name" placeholder="first name"/>
+                  <input type="text" class="registerForm" ng-model="userPass.last_name" placeholder="last name"/>
+                  <input type="integer" class="registerForm" ng-model="userPass.age" placeholder="age"/>
+                  <input type="text" class="registerForm" ng-model="userPass.gender" placeholder="gender"/>
+
                 </br><input type="submit" class="registerFormSubmit"/>
                 </form>
             </div>
@@ -146,9 +152,10 @@
 
                 <a href="#" ng-click="ctrl.logout()" ng-if="ctrl.displayLogout">Log Out</a>
             <!-- //test text below// -->
-                <p>Logged in username: {{ ctrl.user.username }} </p>
-
-                <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
+                <div ng-show="loggedHello">
+                <p>Logged in. Hello {{ ctrl.user.username }} </p>
+              </div>
+                <!-- <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4> -->
 
                 <div> {{ ctrl.error }} </div>
 
