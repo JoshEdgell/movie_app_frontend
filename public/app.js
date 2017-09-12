@@ -320,7 +320,7 @@ $http({
 }).then(function(response) {
   console.log(response);
   console.log('response on login');
-  $scope.loggedHello
+  // $scope.loggedHello
   controller.user = response.data.user;
   console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
