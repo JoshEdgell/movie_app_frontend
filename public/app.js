@@ -226,6 +226,7 @@ app.controller('MainController', ['$http', function($http){
     this.displayLogin = false;
   };
 
+
   this.returnToSearch = function(){
     console.log('hidedivs');
     controller.hideAllCenterDivs();
@@ -252,6 +253,7 @@ app.controller('MainController', ['$http', function($http){
       console.log(error)
     })
   };
+
 
 // ============LOGIN METHODS BELOW=========
 
