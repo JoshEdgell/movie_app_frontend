@@ -152,6 +152,7 @@ app.controller('MainController', ['$http', function($http){
       }).then(function(response){
         controller.getAllApiMovies();
         controller.hideAllCenterDivs();
+        controller.getUserList();
         controller.newReviewText = '';
         controller.displaySearchForm = true;
       }, function(error){
@@ -177,6 +178,7 @@ app.controller('MainController', ['$http', function($http){
           controller.newReviewText = '';
           controller.getAllApiMovies();
           controller.hideAllCenterDivs();
+          controller.getUserList();
           controller.displaySearchForm = true;
         },function(error){
           console.log(error, 'error from adding review to new movie');
