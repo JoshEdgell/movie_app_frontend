@@ -44,17 +44,6 @@ app.controller('MainController', ['$http', function($http){
       controller.getFiveMostRecent();
     })
   };
-  this.getAllUsers = function(){
-    // Returns an array of all of the users in our database (sans passwords);
-    $http({
-      method: 'get',
-      url: this.url + 'users'
-    }).then(function(response){
-      console.log(response);
-    }, function(error){
-      console.log(error, 'getAllUsers')
-    })
-  };
   this.checkMovieList = function(input){
       // Check the name of a movie to see if it's in our database - returns 'false' if not, returns movie_id if it is in the database
     for (let i = 0; i < this.allMovies.length; i++){
@@ -235,7 +224,34 @@ app.controller('MainController', ['$http', function($http){
   this.displayRegistrationDiv = function(){
     this.displayRegistration = true;
     this.displayLogin = false;
-  }
+  };
+
+  this.returnToSearch = function(){
+    console.log('hidedivs');
+    controller.hideAllCenterDivs();
+  };
+  this.getUserList = function(){
+    $http({
+      method: 'get',
+      url: this.url + 'reviews'
+    }).then(function(response){
+      array = response.data;
+      // The next two lines of code were adapted from a search on stackoverflow.
+      // https://stackoverflow.com/questions/15125920/how-to-get-distinct-values-from-an-array-of-objects-in-javascript
+      //sort through the response array and return 
+      let ids = array.map(function(obj) {return obj.user_id});
+      ids = ids.filter(function(i,j) { return ids.indexOf(i) == j});
+      for (let i = 0; i < array.length; i++) {
+        for (let j=0; j < ids.length; j++) {
+          if (array[i].user_id == ids[j]) {
+            controller.allUsers[j] = array[i]
+          }
+        }
+      }
+    },function(error){
+      console.log(error)
+    })
+  };
 
 // ============LOGIN METHODS BELOW=========
 
@@ -246,16 +262,15 @@ app.controller('MainController', ['$http', function($http){
      $http({
        method: 'POST',
        url: this.url + 'users',
-       data: { user: this.newUser},
+       data: { user: { username: userPass.username, password: userPass.password, first_name: userPass.first_name, last_name: userPass.last_name, age: userPass.age, gender: userPass.gender }},
      }).then(function(response) {
        controller.user = response.data;
        console.log(controller.user,'logged user');
        controller.hideAllLogin();
        controller.displayLogOut = true;
-       controller.getAllUsers();
 
      })
-   }
+   };
 
 // /user login///
 
@@ -269,8 +284,9 @@ $http({
   url: this.url + 'users/login',
   data: { user: { username: userPass.username, password: userPass.password }},
 }).then(function(response) {
-  // console.log(response);
-  // console.log('response on login');
+  console.log(response);
+  console.log('response on login');
+  $scope.loggedHello
   controller.user = response.data.user;
   console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
@@ -280,7 +296,7 @@ $http({
   console.log('I skipped the response')
 });
 // }
-}
+};
 
 
 // ===test method below. may want to disable once login tests sucessful===
@@ -315,5 +331,5 @@ this.displayLogin = true;
 
 
 this.getAllApiMovies();
-this.getAllUsers();
+this.getUserList();
 }])
