@@ -22,6 +22,7 @@ app.controller('MainController', ['$http', function($http){
   this.displaySearchResults = false;
   this.displaySingleMovie = false;
   this.displayReviewEdit = false;
+  this.displayIndividualPage = false;
   // Right Div Displays
   this.displayLogin = true;
   this.displayRegistration = false;
@@ -31,6 +32,7 @@ app.controller('MainController', ['$http', function($http){
     this.displaySingleMovie = false;
     this.displaySearchForm = false;
     this.displayReviewEdit = false;
+    this.displayIndividualPage = false;
   };
   this.hideAllLogin = function(){
     this.displayLogin = false;
@@ -265,13 +267,19 @@ app.controller('MainController', ['$http', function($http){
     }
   };
   this.setTargetUser = function(user_id){
-
     for (let i = 0; i < this.allUsers.length; i++) {
+      if (this.allUsers[i].id == user_id) {
+        this.targetUser = this.allUsers[i];
+      }
     }
   };
   this.displayUserPage = function(user_id){
+    this.targetUserReviews = [];
+    this.targetUser = {};
     this.getTargetUserReviews(user_id);
     this.setTargetUser(user_id);
+    this.hideAllCenterDivs();
+    this.displayIndividualPage = true;
 
 
   };

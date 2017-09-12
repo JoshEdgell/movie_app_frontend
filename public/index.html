@@ -129,6 +129,23 @@
           </div>
         </div>
 
+            <!-- Individual Page -->
+
+        <div class="individualPage" ng-if="ctrl.displayIndividualPage">
+          <h2>{{ctrl.targetUser.first_name}} {{ctrl.targetUser.last_name}}'s Movie Review Page</h2>
+
+          <div class="individualMovieReview" ng-repeat="review in ctrl.targetUserReviews">
+            <div class="individualReviewBox">
+              {{review.review_text}}
+            </div>
+            <div class="individualReviewPoster">
+              <img ng-src="{{review.movie.poster}}">
+            </div>
+          </div>
+
+
+        </div>
+
       </div>
 
       <div class="rightDiv">
@@ -166,8 +183,9 @@
                 <button class="logout" ng-click="ctrl.logout();" ng-if="ctrl.displayLogOut">Log Out</button>
 
                 <div class="userList" ng-if="ctrl.displayLogOut">
-                  <div ng-repeat="user in ctrl.allUsers">
-                    <a href="#" ng-click="ctrl.displayUserPage(user.user_id);">{{user.user.first_name}} {{user.user.last_name}}</a>
+                  <h3>View Reviews by User</h3>
+                  <div class="individualUser" ng-repeat="user in ctrl.allUsers">
+                    <a href="#" ng-click="ctrl.displayUserPage(user.id);">{{user.first_name}} {{user.last_name}}</a>
                 </div>
 
 
