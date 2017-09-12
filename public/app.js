@@ -241,6 +241,10 @@ app.controller('MainController', ['$http', function($http){
     this.displayLogin = false;
   }
 
+  this.returnToSearch = function(){
+    console.log('hidedivs');
+    controller.hideAllCenterDivs();
+  }
 
 
     // =============Put at bottom when finished=============
@@ -257,7 +261,7 @@ app.controller('MainController', ['$http', function($http){
      $http({
        method: 'POST',
        url: this.url + 'users',
-       data: { user: { username: userPass.username, password: userPass.password }},
+       data: { user: { username: userPass.username, password: userPass.password, first_name: userPass.first_name, last_name: userPass.last_name, age: userPass.age, gender: userPass.gender }},
      }).then(function(response) {
        console.log(response);
        controller.user = response.data.user;
@@ -279,6 +283,7 @@ $http({
 }).then(function(response) {
   console.log(response);
   console.log('response on login');
+  $scope.loggedHello
   controller.user = response.data.user;
   localStorage.setItem('token', JSON.stringify(response.data.token));
 }, function(error){
