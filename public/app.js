@@ -278,7 +278,7 @@ $http({
   console.log('response on login');
   this.user = response.data.user;
   localStorage.setItem('token', JSON.stringify(response.data.token));
-}.bind(this), function(error){
+}, function(error){
   console.log('I sskipped the response')
 });
 // }
