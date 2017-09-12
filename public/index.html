@@ -71,8 +71,14 @@
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length == 1">
               <p>This movie has 1 review.</p>
                 <div class="movieReview" ng-repeat="review in ctrl.currentMovie.reviews">
+
                   <p>{{review.review_text}}</p>
-                  <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+
+                  <div class="editDelete" ng-if="ctrl.user.id == {{review.user_id}}"
+                    <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+                  </div>
+
+
                 </div>
               <textarea ng-model="ctrl.newReviewText"></textarea>
               <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
@@ -81,9 +87,15 @@
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length > 1">
               <p>This movie has {{ctrl.currentMovie.reviews.length}} reviews.</p>
                 <div class="movieReview" ng-repeat="review in ctrl.currentMovie.reviews">
+                  <hr>
                   <p>{{review.review_text}}</p>
-                  <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+
+                  <div class="editDelete" ng-if="ctrl.user.id == review.user_id">
+                    <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+                  </div>
+
                 </div>
+
               <textarea ng-model="ctrl.newReviewText"></textarea>
               <button ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
             </div>

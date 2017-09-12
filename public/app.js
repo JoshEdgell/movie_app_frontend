@@ -148,7 +148,7 @@ app.controller('MainController', ['$http', function($http){
         method: 'post',
         url: this.url + 'reviews',
         data: {
-          user_id: this.currentUser.id,
+          user_id: this.user.id,
           movie_id: this.currentMovie.id,
           review_text: this.newReviewText
         }
