@@ -256,8 +256,8 @@ app.controller('MainController', ['$http', function($http){
        url: this.url + 'users',
        data: { user: { username: userPass.username, password: userPass.password, first_name: userPass.first_name, last_name: userPass.last_name, age: userPass.age, gender: userPass.gender }},
      }).then(function(response) {
-       console.log(response);
-       controller.user = response.data.user;
+       controller.user = response.data;
+       console.log(controller.user,'logged user');
 
      })
    }
@@ -265,8 +265,8 @@ app.controller('MainController', ['$http', function($http){
 // /user login///
 
 this.login = function(userPass) {
-     console.log('login user');
-console.log(userPass);
+//      console.log('login user');
+// console.log(userPass);
 
 $http({
 
@@ -278,9 +278,10 @@ $http({
   console.log('response on login');
   $scope.loggedHello
   controller.user = response.data.user;
+  console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
 }, function(error){
-  console.log('I sskipped the response')
+  console.log('I skipped the response')
 });
 // }
 }
