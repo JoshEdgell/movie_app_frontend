@@ -162,15 +162,14 @@
 
                 <!-- //logout// -->
 
-<<<<<<< HEAD
-                <button class="logout" ng-click="ctrl.logout();" ng-if="ctrl.displayLogOut">Log Out</button>
-
-=======
                 <h3 ng-if="ctrl.displayLogOut">Hello, {{ctrl.user.first_name}}</h3>
                 <button class="logout" ng-click="ctrl.logout();" ng-if="ctrl.displayLogOut">Log Out</button>
 
+                <div class="userList" ng-if="ctrl.displayLogOut">
+                  <div ng-repeat="user in ctrl.allUsers">
+                    <a href="#" ng-click="ctrl.getTargetUserReviews(user.user_id);">{{user.user.first_name}} {{user.user.last_name}}</a>
+                </div>
 
->>>>>>> 563bafa41d1b34f0caf4365b2dd8afaf7e623aa5
 
 
       </div>

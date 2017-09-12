@@ -8,10 +8,13 @@ app.controller('MainController', ['$http', function($http){
   this.newUser = {};
   this.user = {};
   this.allUsers = [];
+  this.allReviews = [];
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
   this.currentReview = {};
+  this.targetUser = {};
+  this.targetUserReviews = [];
   this.newReviewText = '';
   this.requestedMovieId = 0;
   // Center Div Displays
@@ -237,9 +240,11 @@ app.controller('MainController', ['$http', function($http){
       url: this.url + 'reviews'
     }).then(function(response){
       array = response.data;
+      controller.allReviews = response.data;
+      console.log(controller.allReviews);
       // The next two lines of code were adapted from a search on stackoverflow.
       // https://stackoverflow.com/questions/15125920/how-to-get-distinct-values-from-an-array-of-objects-in-javascript
-      //sort through the response array and return 
+      //sort through the response array and return
       let ids = array.map(function(obj) {return obj.user_id});
       ids = ids.filter(function(i,j) { return ids.indexOf(i) == j});
       for (let i = 0; i < array.length; i++) {
@@ -252,6 +257,16 @@ app.controller('MainController', ['$http', function($http){
     },function(error){
       console.log(error)
     })
+  };
+  this.getTargetUserReviews = function(user_id){
+    for (let i = 0; i < this.allReviews.length; i++) {
+      if (this.allReviews[i].user_id == user_id) {
+        this.targetUserReviews.push(this.allReviews[i]);
+      }
+    }
+  };
+  this.displaySelfPage = function(){
+
   };
 
 
