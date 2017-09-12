@@ -167,7 +167,7 @@
 
                 <div class="userList" ng-if="ctrl.displayLogOut">
                   <div ng-repeat="user in ctrl.allUsers">
-                    <a href="#" ng-click="ctrl.getTargetUserReviews(user.user_id);">{{user.user.first_name}} {{user.user.last_name}}</a>
+                    <a href="#" ng-click="ctrl.displayUserPage(user.user_id);">{{user.user.first_name}} {{user.user.last_name}}</a>
                 </div>
 
 

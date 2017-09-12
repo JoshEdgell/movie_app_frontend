@@ -241,7 +241,6 @@ app.controller('MainController', ['$http', function($http){
     }).then(function(response){
       array = response.data;
       controller.allReviews = response.data;
-      console.log(controller.allReviews);
       // The next two lines of code were adapted from a search on stackoverflow.
       // https://stackoverflow.com/questions/15125920/how-to-get-distinct-values-from-an-array-of-objects-in-javascript
       //sort through the response array and return
@@ -250,7 +249,7 @@ app.controller('MainController', ['$http', function($http){
       for (let i = 0; i < array.length; i++) {
         for (let j=0; j < ids.length; j++) {
           if (array[i].user_id == ids[j]) {
-            controller.allUsers[j] = array[i]
+            controller.allUsers[j] = array[i].user
           }
         }
       }
@@ -265,7 +264,15 @@ app.controller('MainController', ['$http', function($http){
       }
     }
   };
-  this.displaySelfPage = function(){
+  this.setTargetUser = function(user_id){
+
+    for (let i = 0; i < this.allUsers.length; i++) {
+    }
+  };
+  this.displayUserPage = function(user_id){
+    this.getTargetUserReviews(user_id);
+    this.setTargetUser(user_id);
+
 
   };
 
