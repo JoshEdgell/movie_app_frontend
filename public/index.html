@@ -79,8 +79,8 @@
 
                   <p>{{review.review_text}}</p>
 
-                  <div class="editDelete" ng-if="ctrl.user.id == {{review.user_id}}"
-                    <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+                  <div class="editDelete" ng-if="ctrl.user.id == review.user_id">
+                    <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button> </br>
                   </div>
 
 
@@ -132,6 +132,23 @@
           </div>
         </div>
 
+            <!-- Individual Page -->
+
+        <div class="individualPage" ng-if="ctrl.displayIndividualPage">
+          <h2>{{ctrl.targetUser.first_name}} {{ctrl.targetUser.last_name}}'s Movie Review Page</h2>
+
+          <div class="individualMovieReview" ng-repeat="review in ctrl.targetUserReviews">
+            <div class="individualReviewBox">
+              {{review.review_text}}
+            </div>
+            <div class="individualReviewPoster">
+              <img ng-src="{{review.movie.poster}}">
+            </div>
+          </div>
+
+
+        </div>
+
       </div>
 
       <div class="rightDiv">
@@ -165,21 +182,17 @@
 
                 <!-- //logout// -->
 
-                <a href="#" ng-click="ctrl.logout()" ng-if="ctrl.displayLogout">Log Out</a>
-            <!-- //test text below// -->
-                <div ng-show="loggedHello">
-                <p>Logged in. Hello {{ ctrl.user.username }} </p>
-              </div>
-                <!-- <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4> -->
+                <h3 ng-if="ctrl.displayLogOut">Hello, {{ctrl.user.first_name}}</h3>
+                <button class="logout" ng-click="ctrl.logout();" ng-if="ctrl.displayLogOut">Log Out</button>
 
-                <div> {{ ctrl.error }} </div>
-
-                <div ng-repeat="user in ctrl.users">
-                  <h1>{{ user.username }}</h1>
+                <div class="userList" ng-if="ctrl.displayLogOut">
+                  <h3>View Reviews by User</h3>
+                  <div class="individualUser" ng-repeat="user in ctrl.allUsers">
+                    <a href="#" ng-click="ctrl.displayUserPage(user.id);">{{user.first_name}} {{user.last_name}}</a>
                 </div>
-                <!-- ///end test text// -->
 
-        <!-- =========END LOGIN INFO============= -->
+
+
       </div>
 
     </div>

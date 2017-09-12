@@ -101,18 +101,32 @@ a {
    width: 45%;
  }
  .infoPoster {
-   width: 40%;
+   width: 340px;
+   height: 550px;
+   border: 5px solid gray;
  }
  .editDelete {
    margin-top: -16px;
    margin-bottom: 6px;
  }
 
- .infoPoster {
-   border: 5px solid gray;
+
+ /*-------------------------Individual Page-------------------------*/
+ .individualPage {
+   text-align: center;
  }
-
-
+ .individualMovieReview {
+   display: flex;
+   justify-content: space-between;
+   height: 300px;
+ }
+ .individualReviewBox {
+   width: 50%;
+ }
+ .individualReviewPoster img {
+   margin-right: 150px;
+   width: 150px;
+ }
 
   /*All right-specific CSS goes here*/
 .rightDiv {
@@ -162,6 +176,10 @@ a {
   margin-top: 12px;
   margin-left: 40px;
 }
+.logout {
+  margin-left: 100px;
+  margin-top: 12px;
+}
 
 /*neon attributes*/
 @-webkit-keyframes neon1 {
@@ -171,4 +189,3 @@ a {
   to {
     text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FF1177, 0 0 35px #FF1177, 0 0 40px #FF1177, 0 0 50px #FF1177, 0 0 75px #FF1177;
   }
-}

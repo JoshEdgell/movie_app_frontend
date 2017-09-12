@@ -2,16 +2,19 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
-  // this.url = 'https://moviereviewerbackend.herokuapp.com/';
-  this.url = 'http://localhost:3000/';
+  this.url = 'https://moviereviewerbackend.herokuapp.com/';
+  // this.url = 'http://localhost:3000/';
   this.allMovies = [];
   this.newUser = {};
   this.user = {};
   this.allUsers = [];
+  this.allReviews = [];
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
   this.currentReview = {};
+  this.targetUser = {};
+  this.targetUserReviews = [];
   this.newReviewText = '';
   this.requestedMovieId = 0;
   // Center Div Displays
@@ -19,16 +22,23 @@ app.controller('MainController', ['$http', function($http){
   this.displaySearchResults = false;
   this.displaySingleMovie = false;
   this.displayReviewEdit = false;
+  this.displayIndividualPage = false;
   // Right Div Displays
   this.displayLogin = true;
   this.displayRegistration = false;
-  this.displayLogout = false;
+  this.displayLogOut = false;
   this.hideAllCenterDivs = function(){
     this.displaySearchResults = false;
     this.displaySingleMovie = false;
     this.displaySearchForm = false;
     this.displayReviewEdit = false;
+    this.displayIndividualPage = false;
   };
+  this.hideAllLogin = function(){
+    this.displayLogin = false;
+    this.displayRegistration = false;
+    this.displayLogOut = false;
+  }
   this.getAllApiMovies = function(){
     // Return the data for all of the movies in our database
     $http({
@@ -37,19 +47,6 @@ app.controller('MainController', ['$http', function($http){
     }).then(function(response){
       controller.allMovies = response.data;
       controller.getFiveMostRecent();
-    })
-  };
-  this.getAllUsers = function(){
-    // Returns an array of all of the users in our database (sans passwords);
-    $http({
-      method: 'get',
-      url: this.url + 'users'
-    }).then(function(response){
-      // response.data.forEach(function(a){delete a.password});
-      // controller.allUsers = response.data;
-      console.log('password stuff');
-    }, function(error){
-      console.log(error, 'getAllUsers')
     })
   };
   this.checkMovieList = function(input){
@@ -65,7 +62,7 @@ app.controller('MainController', ['$http', function($http){
     data = data.replace(' ', '+');
     $http({
       method: 'get',
-      url: 'http://www.omdbapi.com/?s=' + data + '&apikey=68da6914'
+      url: 'https://www.omdbapi.com/?s=' + data + '&apikey=68da6914'
     }).then(function(response){
       controller.displaySearchResults = true;
       controller.searchResults = response.data.Search;
@@ -98,7 +95,7 @@ app.controller('MainController', ['$http', function($http){
       // If the movie is not in our database, send a request to OMDB to get the movie's data and put the relevant data into the controller's currentMovie object.
       $http({
         method: 'get',
-        url: 'http://www.omdbapi.com/?i=' + imdbid + '&apikey=68da6914'
+        url: 'https://www.omdbapi.com/?i=' + imdbid + '&apikey=68da6914'
       }).then(function(response){
         controller.currentMovie.title = response.data.Title;
         controller.currentMovie.rating = response.data.Rated;
@@ -155,6 +152,7 @@ app.controller('MainController', ['$http', function($http){
       }).then(function(response){
         controller.getAllApiMovies();
         controller.hideAllCenterDivs();
+        controller.getUserList();
         controller.newReviewText = '';
         controller.displaySearchForm = true;
       }, function(error){
@@ -171,7 +169,7 @@ app.controller('MainController', ['$http', function($http){
             method: 'post',
             url: controller.url + 'reviews',
             data: {
-              user_id: controller.currentUser.id,
+              user_id: controller.user.id,
               movie_id: controller.currentMovie.id,
               review_text: controller.newReviewText
             }
@@ -180,6 +178,7 @@ app.controller('MainController', ['$http', function($http){
           controller.newReviewText = '';
           controller.getAllApiMovies();
           controller.hideAllCenterDivs();
+          controller.getUserList();
           controller.displaySearchForm = true;
         },function(error){
           console.log(error, 'error from adding review to new movie');
@@ -232,19 +231,65 @@ app.controller('MainController', ['$http', function($http){
   this.displayRegistrationDiv = function(){
     this.displayRegistration = true;
     this.displayLogin = false;
-  }
+  };
+
 
   this.returnToSearch = function(){
     console.log('hidedivs');
     controller.hideAllCenterDivs();
+
     this.displaySearchForm = true;
-  }
+  };
+  this.getUserList = function(){
+    $http({
+      method: 'get',
+      url: this.url + 'reviews'
+    }).then(function(response){
+      array = response.data;
+      controller.allReviews = response.data;
+      // The next two lines of code were adapted from a search on stackoverflow.
+      // https://stackoverflow.com/questions/15125920/how-to-get-distinct-values-from-an-array-of-objects-in-javascript
+      //sort through the response array and return
+      let ids = array.map(function(obj) {return obj.user_id});
+      ids = ids.filter(function(i,j) { return ids.indexOf(i) == j});
+      for (let i = 0; i < array.length; i++) {
+        for (let j=0; j < ids.length; j++) {
+          if (array[i].user_id == ids[j]) {
+            controller.allUsers[j] = array[i].user
+          }
+        }
+      }
+    },function(error){
+      console.log(error)
+    })
+  };
+  this.getTargetUserReviews = function(user_id){
+    for (let i = 0; i < this.allReviews.length; i++) {
+      if (this.allReviews[i].user_id == user_id) {
+        this.targetUserReviews.push(this.allReviews[i]);
+      }
+    }
+  };
+  this.setTargetUser = function(user_id){
+    for (let i = 0; i < this.allUsers.length; i++) {
+      if (this.allUsers[i].id == user_id) {
+        this.targetUser = this.allUsers[i];
+      }
+    }
+  };
+  this.displayUserPage = function(user_id){
+    this.targetUserReviews = [];
+    this.targetUser = {};
+    this.getTargetUserReviews(user_id);
+    this.setTargetUser(user_id);
+    this.hideAllCenterDivs();
+    this.displayIndividualPage = true;
 
 
-    // =============Put at bottom when finished=============
-  this.getAllApiMovies();
-  // this.getAllUsers();
-  // =======================================================
+  };
+
+
+
 
 // ============LOGIN METHODS BELOW=========
 
@@ -259,9 +304,11 @@ app.controller('MainController', ['$http', function($http){
      }).then(function(response) {
        controller.user = response.data;
        console.log(controller.user,'logged user');
+       controller.hideAllLogin();
+       controller.displayLogOut = true;
 
      })
-   }
+   };
 
 // /user login///
 
@@ -277,15 +324,16 @@ $http({
 }).then(function(response) {
   console.log(response);
   console.log('response on login');
-
   controller.user = response.data.user;
   console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
+  controller.hideAllLogin();
+  controller.displayLogOut = true;
 }, function(error){
   console.log('I skipped the response')
 });
 // }
-}
+};
 
 
 // ===test method below. may want to disable once login tests sucessful===
@@ -312,8 +360,13 @@ this.logout = function() {
   console.log('logout');
 localStorage.clear('token');
 location.reload();
-}
+this.hideAllLogin();
+this.displayLogin = true;
+};
 
 // ============END LOGIN METHODS=========
 
+
+this.getAllApiMovies();
+this.getUserList();
 }])
