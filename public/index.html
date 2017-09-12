@@ -162,21 +162,12 @@
 
                 <!-- //logout// -->
 
-                <a href="#" ng-click="ctrl.logout()" ng-if="ctrl.displayLogout">Log Out</a>
-            <!-- //test text below// -->
-                <div ng-show="loggedHello">
-                <p>Logged in. Hello {{ ctrl.user.username }} </p>
-              </div>
-                <!-- <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4> -->
+                <h3 ng-if="ctrl.displayLogOut">Hello, {{ctrl.user.first_name}}</h3>
+                <button class="logout" ng-click="ctrl.logout();" ng-if="ctrl.displayLogOut">Log Out</button>
 
-                <div> {{ ctrl.error }} </div>
 
-                <div ng-repeat="user in ctrl.users">
-                  <h1>{{ user.username }}</h1>
-                </div>
-                <!-- ///end test text// -->
 
-        <!-- =========END LOGIN INFO============= -->
+
       </div>
 
     </div>
