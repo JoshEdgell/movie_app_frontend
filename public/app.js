@@ -2,23 +2,16 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
-  // this.url = 'https://moviereviewbackend.herokuapp.com/';
+  // this.url = 'https://moviereviewerbackend.herokuapp.com/';
   this.url = 'http://localhost:3000/';
   this.allMovies = [];
+  this.newUser = {};
   this.user = {};
   this.allUsers = [];
   this.fiveMostRecentMovies = [];
   this.searchResults = [];
   this.currentMovie = {};
   this.currentReview = {};
-  this.currentUser = {
-    id: 1,
-    user: 'JoshEdgell',
-    first_name: 'Josh',
-    last_name: 'Edgell',
-    age: 36,
-    gender: 'M'
-  };
   this.newReviewText = '';
   this.requestedMovieId = 0;
   // Center Div Displays
