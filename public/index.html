@@ -156,20 +156,10 @@
 
                 <!-- //logout// -->
 
-                <a href="#" ng-click="ctrl.logout()" ng-if="ctrl.displayLogout">Log Out</a>
-            <!-- //test text below// -->
-                <p>Logged in username: {{ ctrl.user.username }} </p>
+                <button class="logout" ng-click="ctrl.logout();" ng-if="ctrl.displayLogOut">Log Out</button>
 
-                <h4 ng-click="ctrl.getUsers()">Click to see secret stuff</h4>
 
-                <div> {{ ctrl.error }} </div>
 
-                <div ng-repeat="user in ctrl.users">
-                  <h1>{{ user.username }}</h1>
-                </div>
-                <!-- ///end test text// -->
-
-        <!-- =========END LOGIN INFO============= -->
       </div>
 
     </div>

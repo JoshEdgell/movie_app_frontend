@@ -22,13 +22,18 @@ app.controller('MainController', ['$http', function($http){
   // Right Div Displays
   this.displayLogin = true;
   this.displayRegistration = false;
-  this.displayLogout = false;
+  this.displayLogOut = false;
   this.hideAllCenterDivs = function(){
     this.displaySearchResults = false;
     this.displaySingleMovie = false;
     this.displaySearchForm = false;
     this.displayReviewEdit = false;
   };
+  this.hideAllLogin = function(){
+    this.displayLogin = false;
+    this.displayRegistration = false;
+    this.displayLogOut = false;
+  }
   this.getAllApiMovies = function(){
     // Return the data for all of the movies in our database
     $http({
@@ -45,9 +50,7 @@ app.controller('MainController', ['$http', function($http){
       method: 'get',
       url: this.url + 'users'
     }).then(function(response){
-      // response.data.forEach(function(a){delete a.password});
-      // controller.allUsers = response.data;
-      console.log('password stuff');
+      console.log(response);
     }, function(error){
       console.log(error, 'getAllUsers')
     })
@@ -234,13 +237,6 @@ app.controller('MainController', ['$http', function($http){
     this.displayLogin = false;
   }
 
-
-
-    // =============Put at bottom when finished=============
-  this.getAllApiMovies();
-  // this.getAllUsers();
-  // =======================================================
-
 // ============LOGIN METHODS BELOW=========
 
 //user account create///
@@ -254,6 +250,9 @@ app.controller('MainController', ['$http', function($http){
      }).then(function(response) {
        controller.user = response.data;
        console.log(controller.user,'logged user');
+       controller.hideAllLogin();
+       controller.displayLogOut = true;
+       controller.getAllUsers();
 
      })
    }
@@ -275,6 +274,8 @@ $http({
   controller.user = response.data.user;
   console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
+  controller.hideAllLogin();
+  controller.displayLogOut = true;
 }, function(error){
   console.log('I skipped the response')
 });
@@ -306,8 +307,13 @@ this.logout = function() {
   console.log('logout');
 localStorage.clear('token');
 location.reload();
-}
+this.hideAllLogin();
+this.displayLogin = true;
+};
 
 // ============END LOGIN METHODS=========
 
+
+this.getAllApiMovies();
+this.getAllUsers();
 }])
