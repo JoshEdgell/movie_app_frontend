@@ -2,8 +2,8 @@ const app = angular.module('movies', []);
 
 app.controller('MainController', ['$http', function($http){
   const controller = this;
-  // this.url = 'https://moviereviewerbackend.herokuapp.com/';
-  this.url = 'http://localhost:3000/';
+  this.url = 'https://moviereviewerbackend.herokuapp.com/';
+  // this.url = 'http://localhost:3000/';
   this.allMovies = [];
   this.newUser = {};
   this.user = {};
