@@ -169,7 +169,7 @@ app.controller('MainController', ['$http', function($http){
             method: 'post',
             url: controller.url + 'reviews',
             data: {
-              user_id: controller.currentUser.id,
+              user_id: controller.user.id,
               movie_id: controller.currentMovie.id,
               review_text: controller.newReviewText
             }
@@ -285,6 +285,7 @@ app.controller('MainController', ['$http', function($http){
 
 
   };
+
 
 
 // ============LOGIN METHODS BELOW=========

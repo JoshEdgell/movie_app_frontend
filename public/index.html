@@ -76,8 +76,8 @@
 
                   <p>{{review.review_text}}</p>
 
-                  <div class="editDelete" ng-if="ctrl.user.id == {{review.user_id}}"
-                    <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button>
+                  <div class="editDelete" ng-if="ctrl.user.id == review.user_id">
+                    <button ng-click="ctrl.editReview(review.id);">Edit Review</button>  <button ng-click="ctrl.deleteReview(review.id);">Delete Review</button> </br>
                   </div>
 
 
