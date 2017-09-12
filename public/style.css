@@ -82,14 +82,30 @@ a {
    width: 45%;
  }
  .infoPoster {
-   width: 40%;
+   width: 340px;
+   height: 550px;
  }
  .editDelete {
    margin-top: -16px;
    margin-bottom: 6px;
  }
 
-
+ /*-------------------------Individual Page-------------------------*/
+ .individualPage {
+   text-align: center;
+ }
+ .individualMovieReview {
+   display: flex;
+   justify-content: space-between;
+   height: 300px;
+ }
+ .individualReviewBox {
+   width: 50%;
+ }
+ .individualReviewPoster img {
+   margin-right: 150px;
+   width: 150px;
+ }
 
   /*All right-specific CSS goes here*/
 .rightDiv {
