@@ -62,7 +62,7 @@ app.controller('MainController', ['$http', function($http){
     data = data.replace(' ', '+');
     $http({
       method: 'get',
-      url: 'http://www.omdbapi.com/?s=' + data + '&apikey=68da6914'
+      url: 'https://www.omdbapi.com/?s=' + data + '&apikey=68da6914'
     }).then(function(response){
       controller.displaySearchResults = true;
       controller.searchResults = response.data.Search;
@@ -95,7 +95,7 @@ app.controller('MainController', ['$http', function($http){
       // If the movie is not in our database, send a request to OMDB to get the movie's data and put the relevant data into the controller's currentMovie object.
       $http({
         method: 'get',
-        url: 'http://www.omdbapi.com/?i=' + imdbid + '&apikey=68da6914'
+        url: 'https://www.omdbapi.com/?i=' + imdbid + '&apikey=68da6914'
       }).then(function(response){
         controller.currentMovie.title = response.data.Title;
         controller.currentMovie.rating = response.data.Rated;
