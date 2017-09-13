@@ -40,12 +40,13 @@
           <form id="form" ng-submit="ctrl.searchAllNames(searchBox);">
             Search For All Movies With Title: <input type="text" ng-model="searchBox"></input>
             <button type="submit">Find Movie</button>
+                    <!-- <button ng-click="ctrl.returnToSearch();">Return to Search</button> -->
           </form>
         </div>
 
         <!-- Display the results of a search for a movie -->
-
         <div class="displayResults" ng-if="ctrl.displaySearchResults">
+
           <div class="foundMovie" ng-repeat="movie in ctrl.searchResults">
             <img ng-src="{{movie.Poster}}" class="foundMoviePoster" ng-click="ctrl.selectMovieToAddReview(movie.imdbID)">
             <h4>{{movie.Title}}</h4>
@@ -64,13 +65,13 @@
               <p>Director: {{ctrl.currentMovie.director}}</p>
               <p>Synopsis: {{ctrl.currentMovie.plot}}</p>
               <p>Rotten Tomatoes Score: {{ctrl.currentMovie.rotten_tomatoes_score}}</p>
-                  <!-- <button ng-click="ctrl.returnToSearch();">Return to Search</button> -->
+                  <button ng-click="ctrl.returnToSearch();">Return to Search</button>
 
             <div class="addFirstReview" ng-if="ctrl.currentMovie.reviews.length == null || ctrl.currentMovie.reviews.length == 0">
               <p>This movie has no reviews. Be the first to add one.</p>
               <textarea rows="6" cols="50" ng-model="ctrl.newReviewText"></textarea>
               <button class="reviewButton" ng-click="ctrl.addReviewToMovie(ctrl.currentMovie.imdbid);">Add Review</button>
-              <button ng-click="ctrl.returnToSearch();">Return to Search</button>
+              <!-- <button ng-click="ctrl.returnToSearch();">Return to Search</button> -->
             </div>
 
             <div class="addAnotherReview" ng-if="ctrl.currentMovie.reviews.length == 1">
