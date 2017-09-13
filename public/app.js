@@ -136,7 +136,6 @@ app.controller('MainController', ['$http', function($http){
     }
   };
   this.addReviewToMovie = function(imdbid){
-    console.log(this.user, 'current user?');
     //First, check to see if the movie exists in our database.
     //If the movie is in our database, post the review to the reviews table (linked to the current movie)
     //If the movie is not in our database, add the movie to the database, then add the review to the newly-created movie.
@@ -211,7 +210,6 @@ app.controller('MainController', ['$http', function($http){
       controller.currentReview = response.data;
       controller.hideAllCenterDivs();
       controller.displayReviewEdit = true;
-      console.log(controller.currentReview);
     }, function(error){
       console.log(error,'review error')
     })
@@ -235,7 +233,6 @@ app.controller('MainController', ['$http', function($http){
 
 
   this.returnToSearch = function(){
-    console.log('hidedivs');
     controller.hideAllCenterDivs();
 
     this.displaySearchForm = true;
@@ -296,14 +293,14 @@ app.controller('MainController', ['$http', function($http){
 //user account create///
    this.CreateUser = function(userPass) {
      this.displayLogout = true;
-     console.log('creating user');
+    //  console.log('creating user');
      $http({
        method: 'POST',
        url: this.url + 'users',
        data: { user: { username: userPass.username, password: userPass.password, first_name: userPass.first_name, last_name: userPass.last_name, age: userPass.age, gender: userPass.gender }},
      }).then(function(response) {
        controller.user = response.data;
-       console.log(controller.user,'logged user');
+      //  console.log(controller.user,'logged user');
        controller.hideAllLogin();
        controller.displayLogOut = true;
 
@@ -322,10 +319,10 @@ $http({
   url: this.url + 'users/login',
   data: { user: { username: userPass.username, password: userPass.password }},
 }).then(function(response) {
-  console.log(response);
-  console.log('response on login');
+  // console.log(response);
+  // console.log('response on login');
   controller.user = response.data.user;
-  console.log(controller.user,'logged user')
+  // console.log(controller.user,'logged user')
   localStorage.setItem('token', JSON.stringify(response.data.token));
   controller.hideAllLogin();
   controller.displayLogOut = true;
@@ -357,7 +354,7 @@ $http({
 //logout //
 
 this.logout = function() {
-  console.log('logout');
+  // console.log('logout');
 localStorage.clear('token');
 location.reload();
 this.hideAllLogin();
